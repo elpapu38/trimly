@@ -1,0 +1,31 @@
+Options -Indexes +FollowSymLinks
+RewriteEngine On
+RewriteBase /trimly/
+
+# Bloquear acceso directo a carpetas sensibles
+RewriteRule ^app/            - [F,L]
+RewriteRule ^config/         - [F,L]
+RewriteRule ^database/       - [F,L]
+RewriteRule ^routes/         - [F,L]
+RewriteRule ^storage/        - [F,L]
+
+# Servir archivos y carpetas existentes directamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Todo lo demás → index.php
+RewriteRule ^ index.php [QSA,L]
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set Referrer-Policy strict-origin-when-cross-origin
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg   "access plus 1 year"
+    ExpiresByType image/png    "access plus 1 year"
+    ExpiresByType image/webp   "access plus 1 year"
+    ExpiresByType text/css     "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
