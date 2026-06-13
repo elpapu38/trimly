@@ -96,8 +96,48 @@ class ShopDashController extends BaseController
     public function appointments(): void
     {
         $shop   = $this->getOwnerShop();
+        $view   = $this->input('view', 'day'); // 'day' | 'history'
         $date   = $this->input('date', date('Y-m-d'));
         $status = $this->input('status', '');
+        $db     = \App\Models\Database::getInstance();
+
+        if ($view === 'history') {
+            // Past appointments needing attendance confirmation
+            $page   = max(1, (int)$this->input('page', 1));
+            $offset = ($page - 1) * 20;
+            $where  = "shop_id = ? AND date < CURDATE()";
+            $params = [$shop['id']];
+            if ($status) { $where .= " AND status = ?"; $params[] = $status; }
+            $total  = (int)$db->prepare("SELECT COUNT(*) FROM appointments WHERE {$where}")
+                              ->execute($params) ?: 0;
+            $stmt   = $db->prepare("SELECT COUNT(*) FROM appointments WHERE {$where}");
+            $stmt->execute($params);
+            $total  = (int)$stmt->fetchColumn();
+            $stmt2  = $db->prepare("SELECT a.*, s.name AS service_name, e.name AS employee_name
+                FROM appointments a
+                JOIN services s ON s.id = a.service_id
+                LEFT JOIN employees e ON e.id = a.employee_id
+                WHERE {$where}
+                ORDER BY a.date DESC, a.start_time DESC
+                LIMIT 20 OFFSET {$offset}");
+            $stmt2->execute($params);
+            $appts  = $stmt2->fetchAll();
+
+            $config   = require BASE_PATH . '/config/app.php';
+            $this->view('shop_dash/appointments', [
+                'pageTitle'      => 'Historial — ' . $shop['name'],
+                'shop'           => $shop,
+                'appointments'   => $appts,
+                'selectedDate'   => $date,
+                'selectedStatus' => $status,
+                'view'           => 'history',
+                'total'          => $total,
+                'page'           => $page,
+                'lastPage'       => max(1, (int)ceil($total / 20)),
+                'statuses'       => $config['appointment_statuses'] ?? [],
+            ]);
+            return;
+        }
 
         $appts = $this->appointmentModel->getByShop($shop['id'], $date, $status);
 
@@ -105,12 +145,15 @@ class ShopDashController extends BaseController
             $this->json(['appointments' => $appts]);
         }
 
+        $config = require BASE_PATH . '/config/app.php';
         $this->view('shop_dash/appointments', [
-            'pageTitle'    => 'Turnos — ' . $shop['name'],
-            'shop'         => $shop,
-            'appointments' => $appts,
-            'selectedDate' => $date,
+            'pageTitle'      => 'Turnos — ' . $shop['name'],
+            'shop'           => $shop,
+            'appointments'   => $appts,
+            'selectedDate'   => $date,
             'selectedStatus' => $status,
+            'view'           => 'day',
+            'statuses'       => $config['appointment_statuses'] ?? [],
         ]);
     }
 

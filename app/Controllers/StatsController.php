@@ -30,19 +30,51 @@ class StatsController extends BaseController
     {
         $shop  = $this->getOwnerShop();
         $db    = \App\Models\Database::getInstance();
-        $year  = (int) $this->input('year', date('Y'));
+        // Support custom stat periods created by superadmin
+        $db         = \App\Models\Database::getInstance();
+        $allPeriods = $db->query("SELECT * FROM stat_periods ORDER BY date_from DESC")->fetchAll();
+
+        $periodId = $this->input('period', '');
+        $year     = (int) $this->input('year', date('Y'));
+        $dateFrom = null;
+        $dateTo   = null;
+        $activePeriod = null;
+
+        if ($periodId) {
+            foreach ($allPeriods as $p) {
+                if ((int)$p['id'] === (int)$periodId) {
+                    $dateFrom     = $p['date_from'];
+                    $dateTo       = $p['date_to'];
+                    $activePeriod = $p;
+                    break;
+                }
+            }
+        }
 
         // Ingresos y turnos por mes
-        $monthly = $db->prepare("SELECT
-            MONTH(date) AS month,
-            COUNT(*) AS total_appts,
-            SUM(CASE WHEN status='completed' THEN 1 ELSE 0 END) AS completed,
-            SUM(CASE WHEN status='completed' THEN price ELSE 0 END) AS revenue,
-            SUM(CASE WHEN status IN ('cancelled_client','cancelled_shop') THEN 1 ELSE 0 END) AS cancelled
-            FROM appointments
-            WHERE shop_id = ? AND YEAR(date) = ?
-            GROUP BY MONTH(date) ORDER BY month");
-        $monthly->execute([$shop['id'], $year]);
+        if ($dateFrom && $dateTo) {
+            $monthly = $db->prepare("SELECT
+                MONTH(date) AS month,
+                COUNT(*) AS total_appts,
+                SUM(CASE WHEN status='completed' THEN 1 ELSE 0 END) AS completed,
+                SUM(CASE WHEN status='completed' THEN price ELSE 0 END) AS revenue,
+                SUM(CASE WHEN status IN ('cancelled_client','cancelled_shop') THEN 1 ELSE 0 END) AS cancelled
+                FROM appointments
+                WHERE shop_id = ? AND date BETWEEN ? AND ?
+                GROUP BY MONTH(date) ORDER BY month");
+            $monthly->execute([$shop['id'], $dateFrom, $dateTo]);
+        } else {
+            $monthly = $db->prepare("SELECT
+                MONTH(date) AS month,
+                COUNT(*) AS total_appts,
+                SUM(CASE WHEN status='completed' THEN 1 ELSE 0 END) AS completed,
+                SUM(CASE WHEN status='completed' THEN price ELSE 0 END) AS revenue,
+                SUM(CASE WHEN status IN ('cancelled_client','cancelled_shop') THEN 1 ELSE 0 END) AS cancelled
+                FROM appointments
+                WHERE shop_id = ? AND YEAR(date) = ?
+                GROUP BY MONTH(date) ORDER BY month");
+            $monthly->execute([$shop['id'], $year]);
+        }
         $monthlyData = $monthly->fetchAll();
 
         // Servicios más solicitados
@@ -74,7 +106,7 @@ class StatsController extends BaseController
             $byMonth[(int)$row['month']] = $row;
         }
 
-        $this->view('shop_dash/stats', [
+        $this->view('shop_dash/stats', ['allPeriods' => $allPeriods, 'activePeriod' => $activePeriod, 'periodId' => $periodId,
             'pageTitle'    => 'Estadísticas — ' . $shop['name'],
             'shop'         => $shop,
             'year'         => $year,

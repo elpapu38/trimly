@@ -73,6 +73,9 @@ return [
     ['POST', '/admin/usuarios/{id}/status','AdminController@userStatus',    ['auth','superadmin']],
     ['GET',  '/admin/estadisticas',       'AdminController@stats',          ['auth','superadmin']],
     ['GET',  '/admin/resenas',            'AdminController@reviews',        ['auth','superadmin']],
+    ['GET',  '/admin/periodos',           'AdminController@statPeriods',    ['auth','superadmin']],
+    ['POST', '/admin/periodos/crear',     'AdminController@createStatPeriod',['auth','superadmin']],
+    ['POST', '/admin/periodos/{id}/eliminar','AdminController@deleteStatPeriod',['auth','superadmin']],
     ['POST', '/admin/resenas/{id}/moderar','AdminController@moderateReview',['auth','superadmin']],
     // ── Cuenta (cambiar contraseña/email, eliminar) ─────────────
     ['GET',  '/cuenta/contrasena', 'AccountController@changePasswordForm', ['auth']],
@@ -84,6 +87,7 @@ return [
     // ── Panel empleado ───────────────────────────────────────
     ['GET',  '/mi-panel',                         'EmployeeDashController@index',            ['auth','employee_role']],
     ['GET',  '/mi-panel/turnos',                  'EmployeeDashController@appointments',     ['auth','employee_role']],
+    ['GET',  '/mi-panel/historial',               'EmployeeDashController@appointments',     ['auth','employee_role']],
     ['POST', '/mi-panel/turnos/{id}/status',      'EmployeeDashController@updateStatus',     ['auth','employee_role']],
     ['GET',  '/mi-panel/nuevo-turno',             'EmployeeDashController@newAppointment',   ['auth','employee_role']],
     ['POST', '/mi-panel/turnos/nuevo',            'EmployeeDashController@storeAppointment', ['auth','employee_role']],

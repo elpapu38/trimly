@@ -84,6 +84,36 @@ class EmployeeDashController extends BaseController
         $date   = $this->input('date', date('Y-m-d'));
         $status = $this->input('status', '');
 
+        // ── Historial de turnos pasados ───────────────────────
+        $view = $this->input('view', 'day');
+        if ($view === 'history') {
+            $db     = \App\Models\Database::getInstance();
+            $page   = max(1, (int)$this->input('page', 1));
+            $offset = ($page - 1) * 20;
+            $where  = "a.employee_id = ? AND a.date < CURDATE()";
+            $params = [$emp['id']];
+            if ($status) { $where .= " AND a.status = ?"; $params[] = $status; }
+            $countStmt = $db->prepare("SELECT COUNT(*) FROM appointments a WHERE {$where}");
+            $countStmt->execute($params);
+            $total = (int) $countStmt->fetchColumn();
+            $stmt  = $db->prepare("SELECT a.*, s.name AS service_name, s.duration_min
+                FROM appointments a JOIN services s ON s.id = a.service_id
+                WHERE {$where} ORDER BY a.date DESC, a.start_time DESC LIMIT 20 OFFSET {$offset}");
+            $stmt->execute($params);
+            $config = require BASE_PATH . '/config/app.php';
+            $this->view('employee_dash/history', [
+                'pageTitle'      => 'Historial',
+                'employee'       => $emp,
+                'appointments'   => $stmt->fetchAll(),
+                'selectedStatus' => $status,
+                'statuses'       => $config['appointment_statuses'] ?? [],
+                'total'          => $total,
+                'page'           => $page,
+                'lastPage'       => max(1, (int)ceil($total / 20)),
+            ]);
+            return;
+        }
+
         // ── Turnos del empleado en el día ─────────────────────
         $extra  = $status ? 'AND a.status = ?' : '';
         $params = $status ? [$emp['id'], $date, $status] : [$emp['id'], $date];
@@ -376,6 +406,13 @@ class EmployeeDashController extends BaseController
 
         if (empty($_FILES['photo']['name'])) {
             $this->jsonError('No se recibió ningún archivo.', 400);
+        }
+
+        // Enforce 12-photo limit server-side
+        $stmt = $db->prepare("SELECT COUNT(*) FROM employee_photos WHERE employee_id = ?");
+        $stmt->execute([$emp['id']]);
+        if ((int)$stmt->fetchColumn() >= 12) {
+            $this->jsonError('Ya alcanzaste el límite de 12 fotos.', 400);
         }
 
         $path = uploadImage($_FILES['photo'], 'employees');

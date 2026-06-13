@@ -12,7 +12,7 @@ $diasES = ['1'=>'Lun','2'=>'Mar','3'=>'Mié','4'=>'Jue','5'=>'Vie','6'=>'Sáb','
       <div class="flex items-center justify-between mb-3">
         <p class="text-xs font-semibold text-ink-400 uppercase tracking-widest">Semana del <?= date('d/m', strtotime($weekStart)) ?> al <?= date('d/m', strtotime($weekEnd)) ?></p>
       </div>
-      <div class="grid grid-cols-7 gap-1 text-center">
+      <div class="flex gap-1 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
         <?php
         $cur = $weekStart;
         for ($i = 0; $i < 7; $i++):
@@ -22,7 +22,7 @@ $diasES = ['1'=>'Lun','2'=>'Mar','3'=>'Mié','4'=>'Jue','5'=>'Vie','6'=>'Sáb','
           $cnt = count($dayAppts);
         ?>
         <a href="?date=<?= $cur ?>&status=<?= urlencode($selectedStatus) ?>"
-           class="flex flex-col items-center gap-1 p-1.5 rounded-xl transition-all
+           class="flex flex-col items-center gap-1 p-1.5 rounded-xl transition-all shrink-0 w-10
                   <?= $isSelected ? 'bg-gold/15 border border-gold/40' : 'hover:bg-ink-700/50' ?>">
           <span class="text-[10px] text-ink-500"><?= $diasES[$dow] ?></span>
           <span class="text-sm font-bold <?= $isSelected ? 'text-gold' : ($cur === date('Y-m-d') ? 'text-cream-light' : 'text-ink-300') ?>">

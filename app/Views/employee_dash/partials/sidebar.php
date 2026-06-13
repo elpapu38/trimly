@@ -33,3 +33,16 @@ $nav = [
     <a href="<?= path('/logout') ?>" class="text-xs text-ink-500 hover:text-red-400 transition-colors">Cerrar sesión</a>
   </div>
 </aside>
+
+<!-- Mobile bottom nav -->
+<div class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-ink-800/95 backdrop-blur border-t border-ink-700 flex overflow-x-auto">
+  <?php foreach ($nav as $path => [$icon, $label]):
+    $active = str_starts_with($currentPath, $base . $path) && ($path === '/mi-panel' ? $currentPath === $base . '/mi-panel' : true);
+  ?>
+  <a href="<?= path($path) ?>"
+     class="flex flex-col items-center gap-0.5 py-2 px-2.5 text-[10px] whitespace-nowrap shrink-0 <?= $active ? 'text-gold' : 'text-ink-400' ?>">
+    <span class="text-sm"><?= $icon ?></span>
+    <span><?= $label ?></span>
+  </a>
+  <?php endforeach; ?>
+</div>

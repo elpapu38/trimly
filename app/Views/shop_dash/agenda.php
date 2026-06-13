@@ -263,11 +263,27 @@ function openModal(ev) {
       btn.onclick=()=>changeStatus(ev.id,'confirmed');
       acts.appendChild(btn);
     }
-    const btn2=document.createElement('button');
-    btn2.className='flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors';
-    btn2.textContent='Completado';
-    btn2.onclick=()=>changeStatus(ev.id,'completed');
-    acts.appendChild(btn2);
+    if(['pending','confirmed'].includes(status)) {
+      const btn2=document.createElement('button');
+      btn2.className='flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors';
+      btn2.textContent='Completado';
+      btn2.onclick=()=>changeStatus(ev.id,'completed');
+      acts.appendChild(btn2);
+    }
+    if(['pending','confirmed'].includes(status)) {
+      const btnC=document.createElement('button');
+      btnC.className='flex-1 bg-red-700/80 hover:bg-red-700 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors';
+      btnC.textContent='Cancelar';
+      btnC.onclick=()=>changeStatus(ev.id,'cancelled_shop');
+      acts.appendChild(btnC);
+    }
+    if(status === 'confirmed') {
+      const btnN=document.createElement('button');
+      btnN.className='flex-1 bg-ink-600 hover:bg-ink-500 text-ink-200 font-semibold py-2.5 rounded-xl text-sm transition-colors';
+      btnN.textContent='No asistió';
+      btnN.onclick=()=>changeStatus(ev.id,'no_show');
+      acts.appendChild(btnN);
+    }
   }
   const cls=document.createElement('button');
   cls.className='px-4 py-2.5 bg-ink-700 hover:bg-ink-600 text-ink-200 rounded-xl text-sm transition-colors';

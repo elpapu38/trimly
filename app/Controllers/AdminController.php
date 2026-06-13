@@ -161,9 +161,57 @@ class AdminController extends BaseController
 
     public function moderateReview(int $id): void {
         $action = $this->input('action');
-        if ($action==='hide') $this->reviewModel->update($id,['is_visible'=>0]);
-        elseif ($action==='show') $this->reviewModel->update($id,['is_visible'=>1,'report_count'=>0,'flagged_at'=>null]);
-        $this->json(['success'=>true]);
+        $db     = \App\Models\Database::getInstance();
+
+        if ($action === 'hide') {
+            $this->reviewModel->update($id, ['is_visible' => 0]);
+        } elseif ($action === 'show') {
+            $this->reviewModel->update($id, ['is_visible' => 1, 'report_count' => 0, 'flagged_at' => null]);
+        } elseif ($action === 'delete') {
+            $this->reviewModel->delete($id);
+        } elseif ($action === 'warn') {
+            // Send warning: record in user ban_reason without banning
+            $reason  = sanitize($this->input('reason', 'Tu reseña fue reportada y revisada por el equipo de Trimly.'));
+            $review  = $this->reviewModel->find($id);
+            if ($review) {
+                // Get user email from appointment
+                $stmt = $db->prepare("SELECT a.client_email FROM appointments a WHERE a.id = ? LIMIT 1");
+                $stmt->execute([$review['appointment_id']]);
+                $appt = $stmt->fetch();
+                if ($appt) {
+                    $db->prepare("UPDATE users SET ban_reason = CONCAT(IFNULL(ban_reason,''), ' | ADVERTENCIA: ', ?) WHERE email = ?")
+                       ->execute([$reason, $appt['client_email']]);
+                }
+                // Also hide the review
+                $this->reviewModel->update($id, ['is_visible' => 0]);
+            }
+        }
+        $this->json(['success' => true]);
+    }
+
+    // ── Períodos de estadísticas personalizados ──────────────
+    public function statPeriods(): void {
+        $db      = \App\Models\Database::getInstance();
+        $periods = $db->query("SELECT sp.*, u.name AS creator FROM stat_periods sp JOIN users u ON u.id = sp.created_by ORDER BY sp.date_from DESC")->fetchAll();
+        $this->view('admin/stat_periods', ['pageTitle' => 'Períodos de estadísticas', 'periods' => $periods]);
+    }
+
+    public function createStatPeriod(): void {
+        $db   = \App\Models\Database::getInstance();
+        $user = $this->auth();
+        $name = sanitize($this->input('name',''));
+        $from = $this->input('date_from','');
+        $to   = $this->input('date_to','');
+        if (!$name || !$from || !$to || $from > $to) { $this->jsonError('Datos inválidos.'); }
+        $db->prepare("INSERT INTO stat_periods (name,date_from,date_to,created_by) VALUES (?,?,?,?)")
+           ->execute([$name, $from, $to, $user['id']]);
+        $this->json(['success' => true, 'id' => (int)$db->lastInsertId()]);
+    }
+
+    public function deleteStatPeriod(int $id): void {
+        $db = \App\Models\Database::getInstance();
+        $db->prepare("DELETE FROM stat_periods WHERE id = ?")->execute([$id]);
+        $this->json(['success' => true]);
     }
 
     public function stats(): void {

@@ -102,14 +102,47 @@ async function loadSlots(date) {
         const res  = await fetch(url);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
-        renderSlots(data.slots || [], date);
+        if ((data.slots || []).length === 0) {
+            // Find next available date (search up to 60 days ahead)
+            findNextAvailable(date, resolvedEmpId);
+        } else {
+            renderSlots(data.slots, date);
+        }
     } catch(e) {
         console.error('Error cargando slots:', e);
         container.innerHTML = '<p class="text-red-400 text-center py-6 bg-red-500/10 border border-red-500/20 rounded-xl p-4">Error al cargar horarios. Intentá de nuevo.</p>';
     }
 }
 
-function renderSlots(slots, date) {
+async function findNextAvailable(fromDate, empId) {
+    container.innerHTML = `<div class="text-center py-8 text-ink-400">
+        <div class="animate-spin w-6 h-6 border-2 border-gold border-t-transparent rounded-full mx-auto mb-2"></div>
+        Sin turnos ese día, buscando próxima fecha…</div>`;
+
+    let d = new Date(fromDate + 'T12:00:00');
+    for (let i = 1; i <= 60; i++) {
+        d.setDate(d.getDate() + 1);
+        const iso = d.toISOString().split('T')[0];
+        try {
+            const r    = await fetch(`${BASE}/api/slots?employee_id=${empId}&service_id=${serviceId}&date=${iso}`);
+            const data = await r.json();
+            if ((data.slots||[]).length > 0) {
+                // Jump date input and render
+                dateInput.value = iso;
+                renderSlots(data.slots, iso, true);
+                return;
+            }
+        } catch(e) { /* skip */ }
+    }
+    // No slots found in 60 days
+    container.innerHTML = `<div class="text-center py-12 border border-ink-700 rounded-xl bg-ink-800/40">
+        <div class="text-4xl mb-3 opacity-30">📅</div>
+        <p class="text-lg font-medium text-cream-light/60">Sin disponibilidad próxima</p>
+        <p class="text-sm mt-1 text-ink-500">No se encontraron horarios en los próximos 60 días</p>
+    </div>`;
+}
+
+function renderSlots(slots, date, jumped = false) {
     if (!slots.length) {
         container.innerHTML = `<div class="text-center py-12 border border-ink-700 rounded-xl bg-ink-800/40">
             <div class="text-4xl mb-3 opacity-30">📅</div>
@@ -118,6 +151,12 @@ function renderSlots(slots, date) {
         </div>`;
         return;
     }
+    const jumpedBanner = jumped
+        ? `<div class="mb-4 p-3 bg-gold/10 border border-gold/30 rounded-xl text-sm text-gold flex items-center gap-2">
+            <span>📅</span>
+            <span>No había turnos para la fecha anterior. Próxima fecha disponible: <strong>${formatDateES(date)}</strong></span>
+           </div>`
+        : '';
 
     const morning   = slots.filter(s => s.start < '12:00');
     const afternoon = slots.filter(s => s.start >= '12:00' && s.start < '17:00');
@@ -128,7 +167,7 @@ function renderSlots(slots, date) {
         { label: '🌙 Noche',   items: evening },
     ];
 
-    let html = '';
+    let html = jumpedBanner || '';
     for (const g of groups) {
         if (!g.items.length) continue;
         html += `<div class="mb-6">
@@ -157,6 +196,12 @@ function selectSlot(start, date, btn) {
     document.getElementById('hiddenSlot').value = start;
 
     setTimeout(() => document.getElementById('slotForm').submit(), 280);
+}
+
+function formatDateES(iso) {
+    const [y,m,d] = iso.split('-');
+    const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return `${parseInt(d)} de ${months[parseInt(m)-1]} de ${y}`;
 }
 
 dateInput.addEventListener('change', e => loadSlots(e.target.value));

@@ -1,10 +1,10 @@
 <?php /* app/Views/shop_dash/reviews.php */ ?>
-<div class="flex">
+<div class="flex min-h-screen pt-16 pb-20 lg:pb-0">
   <?php include __DIR__ . '/partials/sidebar.php'; ?>
-  <div class="ml-56 flex-1 p-6 min-h-screen bg-ink-900 max-w-4xl">
+  <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden min-w-0">
 
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="font-display text-2xl text-cream-light">Reseñas</h1>
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <h1 class="font-display text-xl sm:text-2xl text-cream-light font-bold">Reseñas</h1>
       <div class="flex items-center gap-2 bg-ink-800 border border-ink-700 rounded-xl px-4 py-2">
         <span class="text-gold text-lg">★</span>
         <span class="text-cream-light font-bold text-lg"><?= number_format((float)$shop['rating_avg'],1) ?></span>
@@ -77,7 +77,7 @@
     <?php endif; ?>
 
     <?php endif; ?>
-  </div>
+  </main>
 </div>
 
 <script>

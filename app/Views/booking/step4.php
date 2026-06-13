@@ -115,14 +115,7 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
             <p class="text-xs text-ink-400">Pago completo vía MercadoPago</p>
           </div>
         </label>
-        <label class="flex items-center gap-3 p-4 bg-ink-800 border border-ink-600 rounded-xl cursor-pointer has-[:checked]:border-gold has-[:checked]:bg-gold/5">
-          <input type="radio" name="payment_option" value="on_site" class="sr-only">
-          <div class="w-5 h-5 rounded-full border-2 border-ink-500 flex-shrink-0 radio-dot"></div>
-          <div>
-            <p class="text-cream-light font-medium text-sm">Pagar en el local</p>
-            <p class="text-xs text-ink-400">Sin seña — confirmación a cargo del local</p>
-          </div>
-        </label>
+        <!-- No se ofrece "pagar en local" cuando hay seña: el local la pide para garantizar la asistencia -->
       </div>
       <?php else: ?>
       <!-- Servicio sin seña — opciones originales -->
