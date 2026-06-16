@@ -7,31 +7,52 @@ $diasES = ['1'=>'Lun','2'=>'Mar','3'=>'Mié','4'=>'Jue','5'=>'Vie','6'=>'Sáb','
 
     <h1 class="font-display text-2xl font-bold text-cream-light mb-6">Mis turnos</h1>
 
-    <!-- Vista semanal -->
+    <?php
+    // Previous/next week
+    $prevWeek = date('Y-m-d', strtotime($weekStart . ' -7 days'));
+    $nextWeek = date('Y-m-d', strtotime($weekStart . ' +7 days'));
+    ?>
+    <!-- Vista semanal con flechas -->
     <div class="bg-ink-800 border border-ink-700 rounded-2xl p-4 mb-6">
       <div class="flex items-center justify-between mb-3">
-        <p class="text-xs font-semibold text-ink-400 uppercase tracking-widest">Semana del <?= date('d/m', strtotime($weekStart)) ?> al <?= date('d/m', strtotime($weekEnd)) ?></p>
+        <a href="?date=<?= $prevWeek ?>&status=<?= urlencode($selectedStatus) ?>"
+           class="w-8 h-8 flex items-center justify-center rounded-xl bg-ink-700/60 hover:bg-ink-700 text-ink-300 hover:text-cream transition-all text-lg shrink-0">
+          ‹
+        </a>
+        <p class="text-xs font-semibold text-ink-400 uppercase tracking-widest">
+          <?= date('d/m', strtotime($weekStart)) ?> — <?= date('d/m', strtotime($weekEnd)) ?>
+        </p>
+        <a href="?date=<?= $nextWeek ?>&status=<?= urlencode($selectedStatus) ?>"
+           class="w-8 h-8 flex items-center justify-center rounded-xl bg-ink-700/60 hover:bg-ink-700 text-ink-300 hover:text-cream transition-all text-lg shrink-0">
+          ›
+        </a>
       </div>
-      <div class="flex gap-1 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
+      <div class="flex gap-1 overflow-x-auto pb-1 scrollbar-none lg:justify-between">
         <?php
         $cur = $weekStart;
         for ($i = 0; $i < 7; $i++):
-          $dow  = date('N', strtotime($cur));
+          $dow        = date('N', strtotime($cur));
           $isSelected = ($cur === $selectedDate);
+          $isToday    = ($cur === date('Y-m-d'));
           $dayAppts   = $weekMap[$cur] ?? [];
-          $cnt = count($dayAppts);
+          $cnt        = count($dayAppts);
+          $completed  = count(array_filter($dayAppts, fn($a) => $a['status'] === 'completed'));
         ?>
         <a href="?date=<?= $cur ?>&status=<?= urlencode($selectedStatus) ?>"
-           class="flex flex-col items-center gap-1 p-1.5 rounded-xl transition-all shrink-0 w-10
-                  <?= $isSelected ? 'bg-gold/15 border border-gold/40' : 'hover:bg-ink-700/50' ?>">
-          <span class="text-[10px] text-ink-500"><?= $diasES[$dow] ?></span>
-          <span class="text-sm font-bold <?= $isSelected ? 'text-gold' : ($cur === date('Y-m-d') ? 'text-cream-light' : 'text-ink-300') ?>">
+           class="flex flex-col items-center gap-0.5 py-2 px-1.5 rounded-xl transition-all shrink-0 w-10 lg:flex-1 relative
+                  <?= $isSelected
+                      ? 'bg-gold/15 border border-gold/40'
+                      : ($isToday ? 'bg-ink-700/40 border border-ink-600' : 'hover:bg-ink-700/50 border border-transparent') ?>">
+          <span class="text-[9px] uppercase <?= $isSelected ? 'text-gold' : 'text-ink-500' ?>"><?= $diasES[$dow] ?></span>
+          <span class="text-sm font-bold <?= $isSelected ? 'text-gold' : ($isToday ? 'text-cream-light' : 'text-ink-300') ?>">
             <?= date('d', strtotime($cur)) ?>
           </span>
           <?php if ($cnt > 0): ?>
-          <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+          <span class="text-[10px] font-bold <?= $isSelected ? 'text-gold' : 'text-ink-400' ?>">
+            <?= $completed ?>/<?= $cnt ?>
+          </span>
           <?php else: ?>
-          <span class="w-1.5 h-1.5"></span>
+          <span class="text-[10px] text-ink-700">—</span>
           <?php endif; ?>
         </a>
         <?php $cur = date('Y-m-d', strtotime($cur . ' +1 day')); endfor; ?>

@@ -353,47 +353,96 @@ $typeIcon   = $typeIcons[$shop['type']] ?? '✂';
                         <?php endif; ?>
                     </div>
 
-                    <!-- Portfolio del empleado — carrusel con loop -->
+                    <!-- Portfolio del empleado — cuadrícula + lightbox (igual que panel de empleado) -->
                     <?php
                     $portfolio12 = array_slice($emp['portfolio'], 0, 12);
                     if (!empty($portfolio12)):
-                    $empCarouselId = 'carousel-' . $emp['id'];
+                    $empGridId = 'empgrid-' . $emp['id'];
+                    $empLbKey  = 'empLb_' . $emp['id'];
                     ?>
                     <div class="px-4 pb-4 sm:px-5 sm:pb-5 border-t border-ink-700/50 pt-4">
-                        <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center justify-between mb-2">
                             <p class="text-xs text-ink-500 uppercase tracking-widest font-semibold">Trabajos</p>
-                            <span class="text-xs text-ink-500" id="<?= $empCarouselId ?>-counter">1 / <?= count($portfolio12) ?></span>
+                            <span class="text-sm font-bold text-white"><?= count($portfolio12) ?> foto<?= count($portfolio12)!==1?'s':'' ?></span>
                         </div>
-                        <!-- Carrusel -->
-                        <div class="relative overflow-hidden rounded-xl">
-                            <div id="<?= $empCarouselId ?>" class="flex transition-transform duration-300 ease-out" style="will-change:transform">
-                            <?php foreach ($portfolio12 as $photo): ?>
-                                <div class="shrink-0 w-full aspect-square cursor-pointer"
-                                     onclick="openEmpPhoto('<?= upload_url($photo['filename']) ?>','<?= e(addslashes($photo['caption'] ?? '')) ?>')">
-                                    <img src="<?= upload_url($photo['filename']) ?>"
-                                         alt="<?= e($photo['caption'] ?? $emp['name']) ?>"
-                                         class="w-full h-full object-cover">
+                        <div class="grid grid-cols-3 gap-1.5" id="<?= $empGridId ?>">
+                            <?php foreach ($portfolio12 as $pIdx => $photo): ?>
+                            <div class="group relative rounded-lg overflow-hidden cursor-pointer" style="aspect-ratio:1"
+                                 onclick="openEmpLb('<?= $empLbKey ?>', <?= $pIdx ?>)">
+                                <img src="<?= upload_url($photo['filename']) ?>"
+                                     alt="<?= e($photo['caption'] ?? $emp['name']) ?>"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                     loading="lazy">
+                                <?php if ($photo['caption']): ?>
+                                <div class="absolute bottom-0 left-0 right-0 bg-black/60 px-1.5 py-1">
+                                    <p class="text-white text-[10px] leading-tight line-clamp-2 font-medium"><?= e($photo['caption']) ?></p>
                                 </div>
-                            <?php endforeach; ?>
+                                <?php endif; ?>
                             </div>
-                            <!-- Flechas -->
-                            <?php if (count($portfolio12) > 1): ?>
-                            <button onclick="empCarouselPrev('<?= $empCarouselId ?>')"
-                                    class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-ink-900/70 hover:bg-ink-900/90 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all">‹</button>
-                            <button onclick="empCarouselNext('<?= $empCarouselId ?>', <?= count($portfolio12) ?>)"
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-ink-900/70 hover:bg-ink-900/90 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all">›</button>
-                            <?php endif; ?>
-                        </div>
-                        <!-- Dots -->
-                        <?php if (count($portfolio12) > 1): ?>
-                        <div class="flex justify-center gap-1 mt-2" id="<?= $empCarouselId ?>-dots">
-                            <?php foreach ($portfolio12 as $di => $_): ?>
-                            <button onclick="empCarouselGo('<?= $empCarouselId ?>', <?= $di ?>, <?= count($portfolio12) ?>)"
-                                    class="w-1.5 h-1.5 rounded-full transition-all <?= $di===0 ? 'bg-gold w-3' : 'bg-ink-600' ?>"></button>
                             <?php endforeach; ?>
                         </div>
-                        <?php endif; ?>
                     </div>
+
+                    <!-- Lightbox para este empleado -->
+                    <div id="lb-<?= $empLbKey ?>" class="fixed inset-0 z-[60] bg-ink-900/95 hidden items-center justify-center p-4"
+                         onclick="if(event.target===this)closeEmpLb('<?= $empLbKey ?>')">
+                        <button onclick="empLbPrev('<?= $empLbKey ?>', <?= count($portfolio12) ?>)"
+                                class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full text-xl flex items-center justify-center z-10">‹</button>
+                        <div class="max-w-xl w-full text-center">
+                            <img id="lb-<?= $empLbKey ?>-img" src="" alt="" class="max-h-[78vh] object-contain rounded-xl mx-auto">
+                            <p id="lb-<?= $empLbKey ?>-cap" class="text-white text-sm mt-2 font-medium"></p>
+                            <p id="lb-<?= $empLbKey ?>-cnt" class="text-ink-500 text-xs mt-0.5"></p>
+                        </div>
+                        <button onclick="empLbNext('<?= $empLbKey ?>', <?= count($portfolio12) ?>)"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full text-xl flex items-center justify-center z-10">›</button>
+                        <button onclick="closeEmpLb('<?= $empLbKey ?>')"
+                                class="absolute top-3 right-3 w-9 h-9 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full flex items-center justify-center text-lg z-10">×</button>
+                    </div>
+                    <script>
+                    (function(){
+                      const key = <?= json_encode($empLbKey) ?>;
+                      const photos = <?= json_encode(array_values(array_map(fn($p)=>['url'=>upload_url($p['filename']),'cap'=>$p['caption']??''],$portfolio12))) ?>;
+                      let idx = 0;
+                      window._empLbIdx = window._empLbIdx || {};
+                      function render(){
+                        window._empLbIdx[key]=idx;
+                        document.getElementById('lb-'+key+'-img').src = photos[idx].url;
+                        document.getElementById('lb-'+key+'-cap').textContent = photos[idx].cap;
+                        document.getElementById('lb-'+key+'-cnt').textContent = (idx+1)+' / '+photos.length;
+                      }
+                      window.openEmpLb = window.openEmpLb || function(k,i){
+                        idx=i; window._empLbIdx[k]=i;
+                        document.getElementById('lb-'+k+'-img').src=photos[i].url;
+                        document.getElementById('lb-'+k+'-cap').textContent=photos[i].cap;
+                        document.getElementById('lb-'+k+'-cnt').textContent=(i+1)+' / '+photos.length;
+                        const m=document.getElementById('lb-'+k); m.classList.remove('hidden'); m.classList.add('flex');
+                        document.body.style.overflow='hidden';
+                      };
+                      window.closeEmpLb = window.closeEmpLb || function(k){
+                        document.getElementById('lb-'+k).classList.replace('flex','hidden');
+                        document.body.style.overflow='';
+                      };
+                      window.empLbNext = window.empLbNext || function(k,t){
+                        const i=(window._empLbIdx[k]??0); idx=(i+1)%t; window.openEmpLb(k,idx);
+                      };
+                      window.empLbPrev = window.empLbPrev || function(k,t){
+                        const i=(window._empLbIdx[k]??0); idx=(i-1+t)%t; window.openEmpLb(k,idx);
+                      };
+                      // Override openEmpLb for this specific key
+                      const origOpen = window.openEmpLb;
+                      window['_empOpen_'+key] = function(i){
+                        idx=i; window._empLbIdx[key]=i;
+                        document.getElementById('lb-'+key+'-img').src=photos[i].url;
+                        document.getElementById('lb-'+key+'-cap').textContent=photos[i].cap;
+                        document.getElementById('lb-'+key+'-cnt').textContent=(i+1)+' / '+photos.length;
+                        const m=document.getElementById('lb-'+key); m.classList.remove('hidden'); m.classList.add('flex');
+                        document.body.style.overflow='hidden';
+                      };
+                    })();
+                    function openEmpLb(k,i){
+                      if(window['_empOpen_'+k]){window['_empOpen_'+k](i);return;}
+                    }
+                    </script>
                     <?php endif; ?>
 
                 </div>
@@ -431,47 +480,7 @@ $typeIcon   = $typeIcons[$shop['type']] ?? '✂';
             }
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEmpPhoto(); });
 
-            // ── Employee photo carousel ──────────────────────────
-            const _carState = {};
-            function empCarouselGo(id, idx, total) {
-                if (!_carState[id]) _carState[id] = { idx: 0 };
-                _carState[id].idx = ((idx % total) + total) % total;
-                const track   = document.getElementById(id);
-                track.style.transform = `translateX(-${_carState[id].idx * 100}%)`;
-                // counter
-                const counter = document.getElementById(id + '-counter');
-                if (counter) counter.textContent = (_carState[id].idx + 1) + ' / ' + total;
-                // dots
-                const dotsEl = document.getElementById(id + '-dots');
-                if (dotsEl) {
-                    dotsEl.querySelectorAll('button').forEach((d, i) => {
-                        d.classList.toggle('bg-gold', i === _carState[id].idx);
-                        d.classList.toggle('w-3',     i === _carState[id].idx);
-                        d.classList.toggle('bg-ink-600', i !== _carState[id].idx);
-                    });
-                }
-            }
-            function empCarouselNext(id, total) {
-                const cur = _carState[id]?.idx ?? 0;
-                empCarouselGo(id, cur + 1, total);
-            }
-            function empCarouselPrev(id, total) {
-                const cur = _carState[id]?.idx ?? 0;
-                // Get total from DOM if not passed (prev button doesn't receive it)
-                const track = document.getElementById(id);
-                const t = total ?? track.children.length;
-                empCarouselGo(id, cur - 1, t);
-            }
-            // Touch swipe support
-            document.querySelectorAll('[id^="carousel-"]').forEach(track => {
-                let startX = 0;
-                track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
-                track.addEventListener('touchend', e => {
-                    const dx   = e.changedTouches[0].clientX - startX;
-                    const total = track.children.length;
-                    if (Math.abs(dx) > 40) dx < 0 ? empCarouselNext(track.id, total) : empCarouselPrev(track.id, total);
-                }, {passive:true});
-            });
+            // Portfolio uses per-employee grid+lightbox (see inline scripts above)
             </script>
 
 

@@ -6,12 +6,12 @@ $isOwner  = $role === 'shop_owner';
 $isClient   = $role === 'client';
 $isEmployee = $role === 'employee';
 ?>
-<header class="fixed top-0 left-0 right-0 z-50">
+<header class="fixed top-0 left-0 right-0 z-50" style="left:0;right:0;width:100%">
   <div id="hdr" class="transition-all duration-300 border-b border-transparent">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <a href="<?= path('/') ?>" class="flex items-center shrink-0">
+    <div class="w-full px-4 sm:px-6">
+      <div class="flex items-center justify-between h-14">
+        <!-- Logo — always top-left -->
+        <a href="<?= path('/') ?>" class="flex items-center shrink-0 mr-6">
           <span class="font-display font-bold text-xl text-cream-light tracking-tight">Trimly<span class="text-gold">.</span></span>
         </a>
         <!-- Desktop Nav -->
@@ -35,7 +35,9 @@ $isEmployee = $role === 'employee';
             <?php if($isClient): ?>
             <a href="<?= path('/mis-turnos') ?>" class="text-sm font-medium text-ink-200 hover:text-cream border border-ink-600 hover:border-ink-400 px-3 py-1.5 rounded-lg transition-all">Mis turnos</a>
             <?php endif; ?>
+            <?php if ($role === 'client'): ?>
             <a href="<?= path('/cuenta/contrasena') ?>" class="text-sm text-ink-500 hover:text-ink-200 transition-colors" title="Mi cuenta">⚙</a>
+            <?php endif; ?>
             <a href="<?= path('/logout') ?>" class="text-sm text-ink-500 hover:text-ink-200 transition-colors">Salir</a>
           <?php else: ?>
             <a href="<?= path('/login') ?>" class="text-sm font-medium text-ink-200 hover:text-cream px-3 py-1.5 transition-colors">Iniciar sesión</a>

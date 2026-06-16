@@ -63,47 +63,37 @@ $remaining  = $photoCount - 6;
       <p class="text-ink-400">Todavía no subiste ninguna foto.</p>
     </div>
     <?php else: ?>
-    <div class="grid grid-cols-3 gap-2 sm:gap-3" id="gallery">
+    <!-- Counter badge -->
+    <p class="text-sm font-bold text-white mb-3"><?= $photoCount ?>/<?= $maxPhotos ?> fotos</p>
+
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-2" id="gallery">
       <?php foreach ($photos as $idx => $p): ?>
-      <?php $isHidden = $idx >= 6; $isLast = $idx === 5 && $remaining > 0; ?>
-      <div class="group relative rounded-xl overflow-hidden border border-ink-700 aspect-square <?= $isHidden ? 'hidden' : '' ?>"
-           data-id="<?= $p['id'] ?>" data-idx="<?= $idx ?>">
+      <div class="group relative rounded-lg overflow-hidden border border-ink-700 cursor-pointer"
+           data-id="<?= $p['id'] ?>" data-idx="<?= $idx ?>"
+           onclick="openLightbox(<?= $idx ?>)"
+           style="aspect-ratio:1">
 
         <img src="<?= upload_url($p['filename']) ?>"
              alt="<?= e($p['caption'] ?? '') ?>"
-             class="w-full h-full object-cover cursor-pointer transition-transform duration-200 group-hover:scale-105"
-             onclick="openLightbox(<?= $idx ?>)">
+             class="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+             loading="lazy">
 
-        <?php if ($isLast): ?>
-        <!-- Overlay "X más" en la 6ta foto si hay más de 6 -->
-        <div class="absolute inset-0 bg-ink-900/70 flex items-center justify-center cursor-pointer"
-             onclick="showAllPhotos()">
-          <span class="text-cream-light text-xl font-bold">+<?= $remaining ?> más</span>
-        </div>
-        <?php else: ?>
+        <!-- Always-visible white caption at bottom -->
         <?php if ($p['caption']): ?>
-        <div class="absolute bottom-0 left-0 right-0 bg-ink-900/80 px-2 py-1.5 text-xs text-cream-light truncate opacity-0 group-hover:opacity-100 transition-opacity">
-          <?= e($p['caption']) ?>
+        <div class="absolute bottom-0 left-0 right-0 bg-black/60 px-1.5 py-1">
+          <p class="text-white text-[10px] leading-tight line-clamp-2 font-medium"><?= e($p['caption']) ?></p>
         </div>
-        <?php endif; ?>
         <?php endif; ?>
 
         <!-- Delete button -->
-        <button onclick="deletePhoto(<?= $p['id'] ?>, this)"
-                class="absolute top-2 right-2 w-7 h-7 bg-red-600/80 hover:bg-red-500 text-white rounded-full text-xs flex items-center justify-center
+        <button onclick="event.stopPropagation();deletePhoto(<?= $p['id'] ?>, this)"
+                class="absolute top-1 right-1 w-6 h-6 bg-red-600/80 hover:bg-red-500 text-white rounded-full text-[10px] flex items-center justify-center
                        opacity-0 group-hover:opacity-100 transition-opacity shadow-md z-10">
           ✕
         </button>
       </div>
       <?php endforeach; ?>
     </div>
-
-    <?php if ($remaining > 0): ?>
-    <button id="show-all-btn" onclick="showAllPhotos()"
-            class="mt-3 w-full py-2.5 border border-ink-600 hover:border-ink-500 text-ink-400 hover:text-cream text-sm rounded-xl transition-all">
-      Ver todas las fotos (<?= $photoCount ?>)
-    </button>
-    <?php endif; ?>
     <?php endif; ?>
 
   </main>

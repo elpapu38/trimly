@@ -189,11 +189,18 @@ class BookingController extends BaseController
             $this->redirect("/reservar/$slug/confirmar");
         }
 
+        // Block non-client users from making bookings
+        $currentUser = $this->auth();
+        if ($currentUser && !in_array($currentUser['role'], ['client'])) {
+            $this->flash('error', 'Las cuentas de negocio o empleado no pueden reservar turnos.');
+            $this->redirect("/reservar/$slug");
+        }
+
         $errors = $this->validate($_POST, [
             'client_name'  => 'required|min:2|max:100',
             'client_email' => 'required|email',
             'client_phone' => 'max:30',
-            'payment_option' => 'required|in:online,on_site',
+            'payment_option' => 'required|in:online,on_site,deposit',
         ]);
 
         if ($errors) {
@@ -225,15 +232,25 @@ class BookingController extends BaseController
             $this->redirect("/reservar/$slug/horario");
         }
 
-        // Crear registro de cliente
-        $db         = \App\Models\Database::getInstance();
-        $clientStmt = $db->prepare("INSERT INTO clients (name, email, phone) VALUES (?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), phone=VALUES(phone)");
-        $clientStmt->execute([
-            sanitize($this->input('client_name')),
-            strtolower(trim($this->input('client_email'))),
-            sanitize($this->input('client_phone', '')),
-        ]);
-        $clientId = (int) $db->lastInsertId() ?: null;
+        // Crear o actualizar registro de cliente
+        $db          = \App\Models\Database::getInstance();
+        $clientEmail = strtolower(trim($this->input('client_email')));
+        $clientName  = sanitize($this->input('client_name'));
+        $clientPhone = sanitize($this->input('client_phone', ''));
+
+        $existingClient = $db->prepare("SELECT id FROM clients WHERE email = ? LIMIT 1");
+        $existingClient->execute([$clientEmail]);
+        $existingRow = $existingClient->fetch();
+
+        if ($existingRow) {
+            $clientId = (int) $existingRow['id'];
+            $db->prepare("UPDATE clients SET name=?, phone=? WHERE id=?")
+               ->execute([$clientName, $clientPhone, $clientId]);
+        } else {
+            $db->prepare("INSERT INTO clients (name, email, phone) VALUES (?,?,?)")
+               ->execute([$clientName, $clientEmail, $clientPhone]);
+            $clientId = (int) $db->lastInsertId() ?: null;
+        }
 
         $token        = bin2hex(random_bytes(20));
         $cancelToken  = bin2hex(random_bytes(20));

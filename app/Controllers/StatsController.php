@@ -51,6 +51,16 @@ class StatsController extends BaseController
             }
         }
 
+        // If no period selected and no periods exist, default to current year for data
+        // but mark as no active period so the view shows the "no periods yet" message
+        if (!$activePeriod && !empty($allPeriods)) {
+            // Periods exist but none selected — use first one by default
+            $activePeriod = $allPeriods[0];
+            $dateFrom     = $activePeriod['date_from'];
+            $dateTo       = $activePeriod['date_to'];
+            $periodId     = $activePeriod['id'];
+        }
+
         // Ingresos y turnos por mes
         if ($dateFrom && $dateTo) {
             $monthly = $db->prepare("SELECT

@@ -51,7 +51,29 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
   <form method="POST" action="<?= path('/reservar/' . e($shop['slug']) . '/confirmar') ?>">
     <input type="hidden" name="_csrf" value="<?= csrf() ?>">
 
-    <h2 class="font-semibold text-cream-light mb-4">Tus datos</h2>
+    <!-- Non-client block -->
+    <?php if ($user && !in_array($user['role'], ['client'])): ?>
+    <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6">
+      <p class="text-red-400 font-semibold text-sm mb-1">⚠ No podés reservar con esta cuenta</p>
+      <p class="text-xs text-red-300/80">Las cuentas de negocio, empleado o admin no pueden hacer reservas.</p>
+      <a href="<?= path('/logout') ?>" class="text-xs text-red-400 underline mt-2 inline-block">Cerrar sesión para usar otra cuenta</a>
+    </div>
+    <?php else: ?>
+
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-cream-light">Tus datos</h2>
+      <?php if ($user): ?>
+      <span class="text-xs text-emerald-400 flex items-center gap-1">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        Datos de tu cuenta
+      </span>
+      <?php else: ?>
+      <div class="text-xs text-ink-400">
+        <a href="<?= path('/login?redirect=' . urlencode('/reservar/' . $shop['slug'] . '/confirmar')) ?>" class="text-gold hover:underline">Iniciá sesión</a>
+        o <a href="<?= path('/registrarse') ?>" class="text-gold hover:underline">registrate</a> para guardar tu historial
+      </div>
+      <?php endif; ?>
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
       <div>
@@ -148,6 +170,7 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
         Confirmar turno
       </button>
     </div>
+  <?php endif; // non-client check ?>
   </form>
 </div>
 </div>

@@ -159,6 +159,8 @@ class ClientController extends BaseController
                 if (!$errors) {
                     $this->userModel->update($user['id'], $data);
                     $_SESSION['user']['name'] = $data['name'];
+                    // Clear any stale form_old so phone shows correctly on reload
+                    unset($_SESSION['form_old'], $_SESSION['form_errors']);
                     $this->flash('success', 'Perfil actualizado.');
                     $this->redirect('/mi-cuenta');
                 }

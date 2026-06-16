@@ -117,7 +117,7 @@ async function loadSlots(date) {
 async function findNextAvailable(fromDate, empId) {
     container.innerHTML = `<div class="text-center py-8 text-ink-400">
         <div class="animate-spin w-6 h-6 border-2 border-gold border-t-transparent rounded-full mx-auto mb-2"></div>
-        Sin turnos ese día, buscando próxima fecha…</div>`;
+        Buscando próxima fecha disponible…</div>`;
 
     let d = new Date(fromDate + 'T12:00:00');
     for (let i = 1; i <= 60; i++) {
@@ -127,19 +127,37 @@ async function findNextAvailable(fromDate, empId) {
             const r    = await fetch(`${BASE}/api/slots?employee_id=${empId}&service_id=${serviceId}&date=${iso}`);
             const data = await r.json();
             if ((data.slots||[]).length > 0) {
-                // Jump date input and render
-                dateInput.value = iso;
-                renderSlots(data.slots, iso, true);
+                // Show friendly recommendation WITHOUT auto-jumping
+                container.innerHTML = `
+                <div class="py-8 text-center">
+                  <div class="inline-flex flex-col items-center gap-3 bg-ink-800 border border-ink-700 rounded-2xl px-6 py-5 max-w-xs mx-auto">
+                    <span class="text-3xl">📅</span>
+                    <div>
+                      <p class="text-cream-light font-semibold text-sm">Sin turnos para esta fecha</p>
+                      <p class="text-ink-400 text-xs mt-1">La próxima fecha disponible es:</p>
+                      <p class="text-gold font-bold text-lg mt-1">${formatDateES(iso)}</p>
+                    </div>
+                    <button onclick="jumpToDate('${iso}')"
+                            class="w-full bg-gold hover:bg-gold-500 text-ink-900 font-bold py-2.5 px-4 rounded-xl text-sm transition-colors">
+                      Ir a esa fecha
+                    </button>
+                    <p class="text-xs text-ink-500">O elegí otra fecha en el calendario</p>
+                  </div>
+                </div>`;
                 return;
             }
         } catch(e) { /* skip */ }
     }
-    // No slots found in 60 days
     container.innerHTML = `<div class="text-center py-12 border border-ink-700 rounded-xl bg-ink-800/40">
         <div class="text-4xl mb-3 opacity-30">📅</div>
         <p class="text-lg font-medium text-cream-light/60">Sin disponibilidad próxima</p>
-        <p class="text-sm mt-1 text-ink-500">No se encontraron horarios en los próximos 60 días</p>
+        <p class="text-sm mt-1 text-ink-500">No hay horarios en los próximos 60 días</p>
     </div>`;
+}
+
+function jumpToDate(iso) {
+    dateInput.value = iso;
+    loadSlots(iso);
 }
 
 function renderSlots(slots, date, jumped = false) {

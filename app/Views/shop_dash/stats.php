@@ -9,31 +9,30 @@ $months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Di
     <div class="flex flex-col gap-3 mb-6">
       <h1 class="font-display text-xl font-bold text-cream-light">Estadísticas</h1>
 
-      <!-- Filtros: años + períodos personalizados -->
+      <!-- Filtros: solo períodos personalizados del superadmin -->
+      <?php if (!empty($allPeriods)): ?>
       <div class="flex flex-wrap gap-2">
-        <?php for ($y = date('Y'); $y >= date('Y')-2; $y--): ?>
-        <a href="?year=<?= $y ?>"
-           class="px-3 py-1.5 rounded-lg text-sm border <?= (!$periodId && $y == $year) ? 'bg-gold text-ink-900 border-gold font-semibold' : 'border-ink-600 text-ink-300 hover:border-gold/50' ?>">
-          <?= $y ?>
-        </a>
-        <?php endfor; ?>
-
-        <?php if (!empty($allPeriods)): ?>
-        <div class="w-px bg-ink-700 self-stretch mx-1 hidden sm:block"></div>
         <?php foreach ($allPeriods as $p): ?>
         <a href="?period=<?= $p['id'] ?>"
-           class="px-3 py-1.5 rounded-lg text-sm border truncate max-w-[160px] <?= ($periodId == $p['id']) ? 'bg-gold text-ink-900 border-gold font-semibold' : 'border-ink-600 text-ink-300 hover:border-gold/50' ?>"
+           class="px-3 py-1.5 rounded-lg text-sm border truncate max-w-[200px]
+                  <?= ($periodId == $p['id']) ? 'bg-gold text-ink-900 border-gold font-semibold' : 'border-ink-600 text-ink-300 hover:border-gold/50' ?>"
            title="<?= e($p['name']) ?> (<?= date('d/m/Y', strtotime($p['date_from'])) ?> – <?= date('d/m/Y', strtotime($p['date_to'])) ?>)">
           <?= e($p['name']) ?>
         </a>
         <?php endforeach; ?>
-        <?php endif; ?>
       </div>
-
       <?php if ($activePeriod): ?>
       <p class="text-xs text-gold/80">
-        Mostrando período: <strong><?= e($activePeriod['name']) ?></strong>
-        (<?= date('d/m/Y', strtotime($activePeriod['date_from'])) ?> → <?= date('d/m/Y', strtotime($activePeriod['date_to'])) ?>)
+        Mostrando: <strong><?= e($activePeriod['name']) ?></strong>
+        · <?= date('d/m/Y', strtotime($activePeriod['date_from'])) ?> → <?= date('d/m/Y', strtotime($activePeriod['date_to'])) ?>
+      </p>
+      <?php else: ?>
+      <p class="text-xs text-ink-500">Elegí un período para ver las estadísticas.</p>
+      <?php endif; ?>
+      <?php else: ?>
+      <p class="text-xs text-amber-400/80 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2">
+        El administrador de Trimly todavía no creó períodos de estadísticas.
+        Cuando los cree, aparecerán aquí como filtros.
       </p>
       <?php endif; ?>
     </div>

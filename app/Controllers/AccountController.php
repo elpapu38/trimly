@@ -69,9 +69,9 @@ class AccountController extends BaseController
         if ($this->userModel->findByEmail($newEmail)) {
             $this->flash('error','Ese email ya está en uso.'); $this->redirect('/cuenta/email'); return;
         }
-        $this->userModel->update($user['id'], ['email' => $newEmail, 'email_verified' => 0]);
+        $this->userModel->update($user['id'], ['email' => $newEmail]);
         $_SESSION['user']['email'] = $newEmail;
-        $this->flash('success','Email actualizado. Necesitás verificarlo de nuevo.');
+        $this->flash('success','Email actualizado correctamente.');
         $this->redirect($this->backUrl($user['role']));
     }
 

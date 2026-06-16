@@ -13,7 +13,7 @@ $nav = [
 ];
 ?>
 <aside class="w-56 shrink-0 bg-ink-800 border-r border-ink-700 min-h-screen fixed top-0 left-0 pt-16 z-20 hidden lg:flex flex-col">
-  <div class="px-4 py-4 border-b border-ink-700">
+  <div class="px-4 py-2 border-b border-ink-700/60">
     <p class="text-xs text-ink-500 uppercase tracking-widest mb-1">Empleado</p>
     <p class="font-semibold text-cream-light text-sm truncate"><?= e($employee['name'] ?? $user['name'] ?? '') ?></p>
     <p class="text-xs text-gold truncate"><?= e($employee['shop_name'] ?? '') ?></p>
@@ -29,18 +29,19 @@ $nav = [
     </a>
     <?php endforeach; ?>
   </nav>
-  <div class="px-4 py-4 border-t border-ink-700">
-    <a href="<?= path('/logout') ?>" class="text-xs text-ink-500 hover:text-red-400 transition-colors">Cerrar sesión</a>
+  <div class="px-4 py-2 border-t border-ink-700/60 space-y-1">
+    <a href="<?= path('/cuenta/contrasena') ?>" class="block text-xs text-ink-500 hover:text-gold transition-colors">⚙ Mi cuenta</a>
+    <a href="<?= path('/logout') ?>" class="block text-xs text-ink-500 hover:text-red-400 transition-colors">⎋ Cerrar sesión</a>
   </div>
 </aside>
 
 <!-- Mobile bottom nav -->
-<div class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-ink-800/95 backdrop-blur border-t border-ink-700 flex overflow-x-auto">
+<div class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-ink-800/95 backdrop-blur border-t border-ink-700/50 flex overflow-x-auto" style="border-top-width:1px">
   <?php foreach ($nav as $path => [$icon, $label]):
     $active = str_starts_with($currentPath, $base . $path) && ($path === '/mi-panel' ? $currentPath === $base . '/mi-panel' : true);
   ?>
   <a href="<?= path($path) ?>"
-     class="flex flex-col items-center gap-0.5 py-2 px-2.5 text-[10px] whitespace-nowrap shrink-0 <?= $active ? 'text-gold' : 'text-ink-400' ?>">
+     class="flex flex-col items-center gap-0 py-1.5 px-2.5 text-[10px] whitespace-nowrap shrink-0 <?= $active ? 'text-gold' : 'text-ink-400' ?>">
     <span class="text-sm"><?= $icon ?></span>
     <span><?= $label ?></span>
   </a>
