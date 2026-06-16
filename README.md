@@ -124,10 +124,7 @@ MP_ACCESS_TOKEN=TEST-xxxxxxxx
 **3. Crear la base de datos en phpMyAdmin**
 - Crear base `trimly` con collation `utf8mb4_unicode_ci`
 - Importar en orden:
-  1. `database/migrations/trimly_db_completo.sql`
-  2. `database/migrations/employee_photos.sql`
-  3. `database/migrations/ban_fields.sql`
-  4. `database/migrations/stat_periods.sql`
+  1. `database/trimlydb-00 (elegir el del numero mas alto, estan en orden de actualizacion)
 
 **4. Abrir en el navegador**
 ```
@@ -139,8 +136,9 @@ http://localhost/trimly
 | Email | Contraseña | Rol |
 |---|---|---|
 | admin@trimly.com | admin123 | superadmin |
-| carlos@elnavajo.com | carlos123 | shop_owner (Barbería El Navajo) |
-| lucas@elnavajo.com | wazawaza | employee (Barbería El Navajo) |
+| carlos@barberia.com | carlos123 | shop_owner (Barbería El Navajo) |
+| lucas@gmail.com | wazawaza | employee (Barbería El Navajo) |
+|cliente.test@trimly.com | wazawaza | client |
 
 ---
 
