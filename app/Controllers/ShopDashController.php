@@ -68,6 +68,16 @@ class ShopDashController extends BaseController
         $monthSt->execute([$shop['id']]);
         $monthStats = $monthSt->fetch();
 
+        // Notas/avisos enviados por el superadmin (últimos 10, no descartadas)
+        $notesSt = $db->prepare("SELECT l.*, u.name AS admin_name
+            FROM shop_moderation_log l
+            JOIN users u ON u.id = l.admin_id
+            WHERE l.shop_id = ? AND l.action IN ('note','suspended','banned')
+              AND l.dismissed_at IS NULL
+            ORDER BY l.created_at DESC LIMIT 10");
+        $notesSt->execute([$shop['id']]);
+        $adminNotes = $notesSt->fetchAll();
+
         $this->view('shop_dash/index', [
             'pageTitle'   => 'Panel — ' . $shop['name'],
             'shop'        => $shop,
@@ -76,6 +86,7 @@ class ShopDashController extends BaseController
             'recentReviews' => $reviews['data'],
             'monthStats'  => $monthStats,
             'today'       => $today,
+            'adminNotes'  => $adminNotes,
         ]);
     }
 
@@ -232,10 +243,58 @@ class ShopDashController extends BaseController
                     'status'      => $a['status'],
                     'phone'       => $a['client_phone'],
                     'price'       => $a['price'],
+                    'notes'       => $a['notes'] ?? '',
                 ],
             ];
         }, $appts);
 
         $this->json($events);
+    }
+
+    // ── Descartar nota del superadmin ─────────────────────────────────
+    public function dismissNote(int $id): void
+    {
+        $user = $this->auth();
+
+        // Validar CSRF igual que el resto de los endpoints POST del panel
+        if (!verifyCsrf($this->input('_csrf', ''))) {
+            $this->json(['ok' => false, 'msg' => 'Token inválido, recargá la página e intentá de nuevo.'], 419);
+            return;
+        }
+
+        // Obtener el shop_id del dueño usando el método correcto
+        if ($user['role'] === 'superadmin') {
+            $shopId = $_SESSION['admin_shop_id'] ?? null;
+        } else {
+            $shop   = $this->shopModel->findBy('owner_id', $user['id']);
+            $shopId = $shop ? $shop['id'] : null;
+        }
+
+        if (!$shopId) {
+            $this->json(['ok' => false, 'msg' => 'No se encontró el local asociado.'], 403);
+            return;
+        }
+
+        try {
+            $db = \App\Models\Database::getInstance();
+            $st = $db->prepare(
+                "UPDATE shop_moderation_log
+                 SET dismissed_at = NOW()
+                 WHERE id = ? AND shop_id = ? AND dismissed_at IS NULL"
+            );
+            $st->execute([$id, $shopId]);
+
+            if ($st->rowCount() === 0) {
+                // No existía, no era de este local, o ya estaba descartada antes
+                $this->json(['ok' => false, 'msg' => 'El aviso ya no está disponible.'], 404);
+                return;
+            }
+
+            $this->json(['ok' => true]);
+
+        } catch (\Throwable $e) {
+            error_log('dismissNote error: ' . $e->getMessage());
+            $this->json(['ok' => false, 'msg' => 'No se pudo descartar el aviso. Intentá nuevamente.'], 500);
+        }
     }
 }

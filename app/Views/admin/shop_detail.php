@@ -119,6 +119,24 @@
       <label class="text-xs text-ink-400 mb-1 block">Días (0 = indefinido)</label>
       <input type="number" id="act-d" min="0" max="365" value="7" class="w-full bg-ink-700 border border-ink-600 rounded-xl px-3 py-2 text-sm text-cream-light focus:border-gold focus:outline-none">
     </div>
+    <div id="act-public-wrap" class="hidden mb-3">
+      <label class="text-xs text-ink-400 mb-1.5 block">¿El local debe aparecer suspendido para los clientes?</label>
+      <div class="grid grid-cols-2 gap-2">
+        <button type="button" onclick="setActPublic(true,this)"
+                class="act-vis-btn py-2.5 rounded-xl text-sm font-semibold border-2 border-gold bg-gold/15 text-gold transition-all"
+                data-val="1">
+          Sí, mostrar suspendido
+        </button>
+        <button type="button" onclick="setActPublic(false,this)"
+                class="act-vis-btn py-2.5 rounded-xl text-sm font-semibold border-2 border-ink-600 text-ink-300 hover:border-ink-500 transition-all"
+                data-val="0">
+          No, ocultarlo
+        </button>
+      </div>
+      <p class="text-[10px] text-ink-500 mt-1.5">
+        "Ocultarlo" mantiene la suspensión interna pero el local se ve normal para los clientes (sin reservas).
+      </p>
+    </div>
     <div class="flex gap-3">
       <button id="act-confirm" class="flex-1 bg-gold text-ink-900 font-semibold py-2.5 rounded-xl text-sm">Confirmar</button>
       <button onclick="document.getElementById('act-modal').classList.replace('flex','hidden')" class="flex-1 bg-ink-700 text-ink-200 py-2.5 rounded-xl text-sm">Cancelar</button>
@@ -127,22 +145,35 @@
 </div>
 <script>
 let _act=null;
+let _actPublic=1; // por defecto: mostrar suspendido
 const shopId=<?= $shop['id'] ?>;
+
+function setActPublic(val, btn){
+  _actPublic = val ? 1 : 0;
+  document.querySelectorAll('.act-vis-btn').forEach(b=>{
+    b.classList.remove('border-gold','bg-gold/15','text-gold');
+    b.classList.add('border-ink-600','text-ink-300');
+  });
+  btn.classList.remove('border-ink-600','text-ink-300');
+  btn.classList.add('border-gold','bg-gold/15','text-gold');
+}
+
 function doAction(action,title,showDays){
-  _act=action;
+  _act=action; _actPublic=1;
   document.getElementById('act-title').textContent=title;
   document.getElementById('act-r').value='';
   document.getElementById('act-d').value='7';
   document.getElementById('act-days-wrap').classList.toggle('hidden',!showDays);
+  document.getElementById('act-public-wrap').classList.toggle('hidden',!showDays);
   document.getElementById('act-confirm').onclick=()=>sendAction();
   document.getElementById('act-modal').classList.replace('hidden','flex');
 }
 async function sendAction(){
   document.getElementById('act-modal').classList.replace('flex','hidden');
-  await call(_act,document.getElementById('act-r').value,document.getElementById('act-d').value);
+  await call(_act,document.getElementById('act-r').value,document.getElementById('act-d').value,_actPublic);
 }
 async function quickAct(action){await call(action,'',0);}
-async function call(action,reason,days){
-  const d=await trimlyAction(`<?= path('/admin/locales/') ?>${shopId}/moderar`,{action,reason,days},()=>setTimeout(()=>location.reload(),1200));
+async function call(action,reason,days,pub=1){
+  const d=await trimlyAction(`<?= path('/admin/locales/') ?>${shopId}/moderar`,{action,reason,days,suspension_public:pub},()=>setTimeout(()=>location.reload(),1200));
 }
 </script>

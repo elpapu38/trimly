@@ -18,6 +18,7 @@ class Database
             $dsn = "mysql:host={$cfg['host']};port={$cfg['port']};dbname={$cfg['database']};charset={$cfg['charset']}";
             try {
                 self::$instance = new PDO($dsn, $cfg['username'], $cfg['password'], $cfg['options']);
+                self::$instance->exec("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
             } catch (PDOException $e) {
                 error_log('Trimly DB Error: ' . $e->getMessage());
                 http_response_code(500);

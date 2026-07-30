@@ -65,6 +65,7 @@ return [
     ['POST', '/panel/resenas/{id}/reply', 'ReviewController@reply',         ['auth','shop_owner']],
     ['POST', '/panel/resenas/{id}/toggle','ReviewController@toggle',        ['auth','shop_owner']],
     ['GET',  '/panel/estadisticas',       'StatsController@index',          ['auth','shop_owner']],
+    ['POST', '/panel/notas/{id}/descartar','ShopDashController@dismissNote', ['auth','shop_owner']],
     ['GET',  '/admin',                    'AdminController@index',          ['auth','superadmin']],
     ['GET',  '/admin/locales',            'AdminController@shops',          ['auth','superadmin']],
     ['GET',  '/admin/locales/{id}',       'AdminController@shopDetail',     ['auth','superadmin']],

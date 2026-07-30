@@ -43,7 +43,7 @@ class ClientController extends BaseController
 
         $this->view('client/dashboard', [
             'pageTitle' => 'Mi cuenta',
-            'userRow'   => $user,
+            'userRow'   => $this->userModel->find($user['id']),  // full DB row including phone
             'upcoming'  => array_values($upcoming),
             'past'      => array_values($past),
         ]);
@@ -66,7 +66,7 @@ class ClientController extends BaseController
 
         $this->view('client/dashboard', [
             'pageTitle' => 'Mis turnos',
-            'userRow'   => $user,
+            'userRow'   => $this->userModel->find($user['id']),  // full DB row
             'upcoming'  => array_values($upcoming),
             'past'      => array_values($past),
         ]);
@@ -157,9 +157,19 @@ class ClientController extends BaseController
                 }
 
                 if (!$errors) {
+                    // Handle avatar upload (max 3MB)
+                    if (!empty($_FILES['avatar']['name'])) {
+                        $avatarPath = uploadImage($_FILES['avatar'], 'avatars', 3145728);
+                        if ($avatarPath) {
+                            $data['avatar'] = $avatarPath;
+                            $_SESSION['user']['avatar'] = $avatarPath;
+                        } else {
+                            $this->flash('error', 'La imagen no es válida o supera los 3 MB.');
+                            $this->redirect('/mi-cuenta');
+                        }
+                    }
                     $this->userModel->update($user['id'], $data);
                     $_SESSION['user']['name'] = $data['name'];
-                    // Clear any stale form_old so phone shows correctly on reload
                     unset($_SESSION['form_old'], $_SESSION['form_errors']);
                     $this->flash('success', 'Perfil actualizado.');
                     $this->redirect('/mi-cuenta');

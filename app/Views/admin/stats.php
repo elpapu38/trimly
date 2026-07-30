@@ -4,28 +4,21 @@
 <main class="flex-1 p-5 lg:p-8 overflow-x-hidden min-w-0">
   <div class="flex items-center justify-between mb-6">
     <h1 class="font-display text-xl font-bold text-cream-light">Estadísticas globales</h1>
-    <form method="GET" class="flex gap-2">
-      <select name="year" onchange="this.form.submit()" class="bg-ink-700 border border-ink-600 rounded-xl px-3 py-2 text-sm text-cream-light focus:border-gold focus:outline-none">
-        <?php for($y=date('Y');$y>=date('Y')-3;$y--): ?>
-        <option value="<?=$y?>" <?=$y===$year?'selected':''?>><?=$y?></option>
-        <?php endfor; ?>
-      </select>
-    </form>
+    <p class="text-xs text-ink-500">Datos del año en curso</p>
   </div>
 
   <!-- Monthly chart -->
-  <div class="bg-ink-800 border border-ink-700 rounded-2xl p-6 mb-5">
+  <div class="bg-ink-800 border border-ink-700 rounded-2xl p-5 mb-5">
     <h2 class="font-semibold text-cream-light mb-4 text-sm">Turnos completados por mes — <?= $year ?></h2>
-    <?php $maxC=max(1,max(array_column($byMonth,'completed'))); $months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']; ?>
-    <div class="flex items-end gap-1.5 h-32">
-      <?php foreach($byMonth as $i=>$m): $h=max(2,(int)(($m['completed']/$maxC)*100)); ?>
-      <div class="flex-1 flex flex-col items-center gap-1">
-        <span class="text-[9px] text-ink-400 hidden sm:block"><?= $m['completed'] ?></span>
-        <div class="w-full bg-gold rounded-t" style="height:<?=$h?>%"></div>
-        <span class="text-[9px] text-ink-500"><?= $months[$i] ?></span>
-      </div>
-      <?php endforeach; ?>
-    </div>
+    <?php $months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']; ?>
+    <canvas id="monthlyChart" height="90"></canvas>
+    <script>
+    window._monthlyData = {
+      labels: <?= json_encode($months) ?>,
+      completed: <?= json_encode(array_map('intval', array_column($byMonth, 'completed'))) ?>,
+      total:     <?= json_encode(array_map('intval', array_column($byMonth, 'total_appts'))) ?>,
+    };
+    </script>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
@@ -62,18 +55,67 @@
     <!-- Crecimiento usuarios -->
     <div class="bg-ink-800 border border-ink-700 rounded-2xl p-5">
       <h2 class="font-semibold text-cream-light mb-3 text-sm">Nuevos usuarios (12m)</h2>
-      <?php if(empty($growth)): ?><p class="text-xs text-ink-500">Sin datos.</p>
-      <?php else: $maxG=max(1,max(array_column($growth,'new_users'))); ?>
-      <div class="flex items-end gap-1 h-20">
-        <?php foreach($growth as $g): $h=max(2,(int)($g['new_users']/$maxG*100)); ?>
-        <div class="flex-1 flex flex-col items-center gap-0.5">
-          <div class="w-full bg-emerald-500 rounded-t" style="height:<?=$h?>%"></div>
-          <span class="text-[8px] text-ink-500"><?= substr($g['ym'],5) ?></span>
-        </div>
-        <?php endforeach; ?>
-      </div>
+      <?php if(empty($growth)): ?>
+        <p class="text-xs text-ink-500 py-4 text-center">Sin datos.</p>
+      <?php else: ?>
+      <canvas id="growthChart" height="120"></canvas>
+      <script>
+      (function(){
+        const labels = <?= json_encode(array_column($growth,'ym')) ?>;
+        const data   = <?= json_encode(array_map('intval', array_column($growth,'new_users'))) ?>;
+        if(!window.Chart) return; // Chart.js not yet loaded, will retry below
+        new Chart(document.getElementById('growthChart'), {
+          type: 'bar',
+          data: {
+            labels,
+            datasets:[{ label:'Nuevos usuarios', data,
+              backgroundColor:'rgba(34,197,94,0.6)', borderColor:'#22c55e', borderWidth:1, borderRadius:3 }]
+          },
+          options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true,ticks:{stepSize:1}} } }
+        });
+      })();
+      </script>
       <?php endif; ?>
     </div>
+
+  <!-- Chart.js + init all charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+  Chart.defaults.color       = '#A0A0A0';
+  Chart.defaults.borderColor = '#2E2E2E';
+
+  // Monthly turnos chart
+  const mData = window._monthlyData;
+  if(mData && document.getElementById('monthlyChart')) {
+    new Chart(document.getElementById('monthlyChart'), {
+      type: 'bar',
+      data: {
+        labels: mData.labels,
+        datasets: [
+          { label: 'Completados', data: mData.completed,
+            backgroundColor: 'rgba(201,168,76,0.75)', borderColor: '#C9A84C', borderWidth:1, borderRadius:4 },
+          { label: 'Total',       data: mData.total,
+            backgroundColor: 'rgba(201,168,76,0.2)',  borderColor: '#C9A84C', borderWidth:1, borderRadius:4,
+            borderDash: [4,2] }
+        ]
+      },
+      options: { responsive:true, scales:{ y:{ beginAtZero:true } } }
+    });
+  }
+
+  // Growth chart
+  const gEl = document.getElementById('growthChart');
+  if(gEl && !gEl._chart) {
+    const labels = <?= json_encode(array_column($growth ?? [],'ym')) ?>;
+    const data   = <?= json_encode(array_map('intval', array_column($growth ?? [],'new_users'))) ?>;
+    gEl._chart = new Chart(gEl, {
+      type: 'bar',
+      data: { labels, datasets:[{ label:'Nuevos usuarios', data,
+        backgroundColor:'rgba(34,197,94,0.65)', borderColor:'#22c55e', borderWidth:1, borderRadius:3 }] },
+      options:{ responsive:true, plugins:{legend:{display:false}}, scales:{ y:{beginAtZero:true, ticks:{stepSize:1}} } }
+    });
+  }
+  </script>
   </div>
 
   <!-- Top locales -->

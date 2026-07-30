@@ -79,9 +79,22 @@ class AdminController extends BaseController
                 break;
             case 'suspend':
                 $expiresAt = $days>0 ? date('Y-m-d H:i:s',strtotime("+{$days} days")) : null;
-                $updates = ['status'=>'suspended','suspension_reason'=>$reason,'suspension_until'=>$expiresAt];
+                $pub       = (int)($this->input('suspension_public', 1));
+                $updates   = [
+                    'status'             => 'suspended',
+                    'suspension_reason'  => $reason,
+                    'suspension_until'   => $expiresAt,
+                    'suspension_public'  => $pub,
+                ];
                 $logAction = 'suspended'; break;
-            case 'unsuspend': $updates=['status'=>'active','suspension_reason'=>null,'suspension_until'=>null]; $logAction='unsuspended'; break;
+            case 'unsuspend':
+                $updates = [
+                    'status'            => 'active',
+                    'suspension_reason' => null,
+                    'suspension_until'  => null,
+                    'suspension_public' => 1,
+                ];
+                $logAction = 'unsuspended'; break;
             case 'ban':       $updates=['status'=>'suspended','ban_reason'=>$reason]; $logAction='banned'; break;
             case 'unban':     $updates=['status'=>'active','ban_reason'=>null]; $logAction='unbanned'; break;
             case 'shadowban': $updates=['is_shadowbanned'=>1]; $logAction='shadowban'; break;
@@ -134,18 +147,36 @@ class AdminController extends BaseController
 
         if (!in_array($action,['active','suspended','banned'])) { $this->jsonError('Estado no válido',400); return; }
 
-        $updates = ['status' => $action, 'ban_reason' => $reason ?: null];
+        // Check if suspended_until column exists before using it
+        $db2 = \App\Models\Database::getInstance();
+        $hasSuspendedUntil = (bool) $db2->query(
+            "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='users' AND COLUMN_NAME='suspended_until'"
+        )->fetchColumn();
 
-        if ($action === 'suspended' && $days > 0) {
-            $updates['suspended_until'] = date('Y-m-d H:i:s', strtotime("+{$days} days"));
-        } elseif ($action === 'active') {
-            $updates['suspended_until'] = null;
-            $updates['ban_reason']      = null;
+        if ($action === 'active') {
+            $sql = $hasSuspendedUntil
+                ? "UPDATE users SET status='active', ban_reason=NULL, suspended_until=NULL WHERE id=?"
+                : "UPDATE users SET status='active', ban_reason=NULL WHERE id=?";
+            $db2->prepare($sql)->execute([$id]);
+        } elseif ($action === 'suspended') {
+            $until = ($days > 0) ? date('Y-m-d H:i:s', strtotime("+{$days} days")) : null;
+            if ($hasSuspendedUntil) {
+                $db2->prepare("UPDATE users SET status='suspended', ban_reason=?, suspended_until=? WHERE id=?")
+                    ->execute([$reason ?: null, $until, $id]);
+            } else {
+                $db2->prepare("UPDATE users SET status='suspended', ban_reason=? WHERE id=?")
+                    ->execute([$reason ?: null, $id]);
+            }
         } elseif ($action === 'banned') {
-            $updates['suspended_until'] = null; // permanent
+            if ($hasSuspendedUntil) {
+                $db2->prepare("UPDATE users SET status='banned', ban_reason=?, suspended_until=NULL WHERE id=?")
+                    ->execute([$reason ?: null, $id]);
+            } else {
+                $db2->prepare("UPDATE users SET status='banned', ban_reason=? WHERE id=?")
+                    ->execute([$reason ?: null, $id]);
+            }
         }
 
-        $this->userModel->update($id, $updates);
         $this->json(['success'=>true, 'action'=>$action]);
     }
 

@@ -64,9 +64,9 @@
     </div>
 
     <!-- Paginación -->
-    <?php if ($pagination['total_pages'] > 1): ?>
+    <?php if ($pagination['last_page'] > 1): ?>
     <div class="flex justify-center gap-2 mt-6">
-      <?php for ($p = 1; $p <= $pagination['total_pages']; $p++): ?>
+      <?php for ($p = 1; $p <= $pagination['last_page']; $p++): ?>
       <a href="?page=<?= $p ?>"
          class="w-9 h-9 rounded-lg flex items-center justify-center text-sm border
            <?= $p == $pagination['current_page'] ? 'bg-gold text-ink-900 border-gold' : 'border-ink-600 text-ink-300 hover:border-gold/50' ?>">

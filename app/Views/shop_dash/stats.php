@@ -130,35 +130,58 @@ $months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Di
   </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-const months  = <?= json_encode($months) ?>;
-const byMonth = <?= json_encode(array_values($byMonth)) ?>;
-const revenues  = byMonth.map(m => parseFloat(m.revenue)||0);
-const completed = byMonth.map(m => parseInt(m.completed)||0);
-const cancelled = byMonth.map(m => parseInt(m.cancelled)||0);
-
-Chart.defaults.color       = '#A0A0A0';
-Chart.defaults.borderColor = '#2E2E2E';
-
-new Chart(document.getElementById('revenueChart'), {
-  type: 'bar',
-  data: {
-    labels: months,
-    datasets: [{ label:'Ingresos ($)', data:revenues, backgroundColor:'rgba(201,168,76,0.7)', borderColor:'#C9A84C', borderWidth:1, borderRadius:4 }]
-  },
-  options: { responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{ beginAtZero:true } } }
-});
-
-new Chart(document.getElementById('apptsChart'), {
-  type: 'line',
-  data: {
-    labels: months,
-    datasets: [
-      { label:'Completados', data:completed, borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,0.1)', tension:0.3, fill:true },
-      { label:'Cancelados',  data:cancelled, borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,0.1)',  tension:0.3, fill:true }
-    ]
-  },
-  options: { responsive:true, scales:{ y:{ beginAtZero:true } } }
-});
+// Datos PHP → JS (embebidos antes de cargar Chart.js para disponibilidad inmediata)
+window._trimlyChartData = {
+  months  : <?= json_encode($months) ?>,
+  byMonth : <?= json_encode(array_values($byMonth)) ?>
+};
 </script>
+<script
+  src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+  onload="window._initTrimlyCharts()"
+  onerror="document.getElementById('chartError').classList.remove('hidden')"
+></script>
+<script>
+window._initTrimlyCharts = function () {
+  var months    = window._trimlyChartData.months;
+  var byMonth   = window._trimlyChartData.byMonth;
+  var revenues  = byMonth.map(function(m){ return parseFloat(m.revenue)  || 0; });
+  var completed = byMonth.map(function(m){ return parseInt(m.completed)  || 0; });
+  var cancelled = byMonth.map(function(m){ return parseInt(m.cancelled)  || 0; });
+
+  Chart.defaults.color       = '#A0A0A0';
+  Chart.defaults.borderColor = '#2E2E2E';
+
+  var cvRevenue = document.getElementById('revenueChart');
+  var cvAppts   = document.getElementById('apptsChart');
+  if (!cvRevenue || !cvAppts) return;
+
+  new Chart(cvRevenue, {
+    type: 'bar',
+    data: {
+      labels  : months,
+      datasets: [{ label:'Ingresos ($)', data:revenues, backgroundColor:'rgba(201,168,76,0.7)', borderColor:'#C9A84C', borderWidth:1, borderRadius:4 }]
+    },
+    options: { responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{ beginAtZero:true } } }
+  });
+
+  new Chart(cvAppts, {
+    type: 'line',
+    data: {
+      labels  : months,
+      datasets: [
+        { label:'Completados', data:completed, borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,0.1)', tension:0.3, fill:true },
+        { label:'Cancelados',  data:cancelled, borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,0.1)',  tension:0.3, fill:true }
+      ]
+    },
+    options: { responsive:true, scales:{ y:{ beginAtZero:true } } }
+  });
+};
+
+// Si Chart.js ya estaba cacheado y onload no se disparó, inicializar igual
+if (typeof Chart !== 'undefined') { window._initTrimlyCharts(); }
+</script>
+<div id="chartError" class="hidden text-center text-ink-400 text-sm mt-2 p-4">
+  No se pudo cargar la librería de gráficos. Verificá tu conexión a internet.
+</div>

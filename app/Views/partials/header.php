@@ -29,14 +29,14 @@ $isEmployee = $role === 'employee';
         <!-- Desktop Auth -->
         <div class="hidden md:flex items-center gap-3">
           <?php if($user): ?>
+            <?php if (!empty($user['avatar'])): ?>
+            <img src="<?= upload_url($user['avatar']) ?>" alt="" class="w-7 h-7 rounded-full object-cover border border-ink-600">
+            <?php endif; ?>
             <span class="text-sm text-ink-300">Hola, <span class="text-cream font-medium"><?= e(explode(' ',$user['name'])[0]) ?></span>
               <?php if($isAdmin): ?><span class="ml-1 text-[10px] bg-gold/15 text-gold border border-gold/25 px-2 py-0.5 rounded-full">Admin</span><?php endif; ?>
             </span>
             <?php if($isClient): ?>
             <a href="<?= path('/mis-turnos') ?>" class="text-sm font-medium text-ink-200 hover:text-cream border border-ink-600 hover:border-ink-400 px-3 py-1.5 rounded-lg transition-all">Mis turnos</a>
-            <?php endif; ?>
-            <?php if ($role === 'client'): ?>
-            <a href="<?= path('/cuenta/contrasena') ?>" class="text-sm text-ink-500 hover:text-ink-200 transition-colors" title="Mi cuenta">⚙</a>
             <?php endif; ?>
             <a href="<?= path('/logout') ?>" class="text-sm text-ink-500 hover:text-ink-200 transition-colors">Salir</a>
           <?php else: ?>
@@ -69,7 +69,6 @@ $isEmployee = $role === 'employee';
         <?php if($user): ?>
           <p class="px-3 py-1 text-xs text-ink-500"><?= e($user['name']) ?></p>
           <?php if($isClient): ?><a href="<?= path('/mis-turnos') ?>" class="block px-3 py-2.5 text-sm text-ink-200 rounded-xl hover:bg-ink-700">Mis turnos</a><?php endif; ?>
-          <a href="<?= path('/cuenta/contrasena') ?>" class="block px-3 py-2.5 text-sm text-ink-200 rounded-xl hover:bg-ink-700">Mi cuenta</a>
           <a href="<?= path('/logout') ?>" class="block px-3 py-2.5 text-sm text-red-400 rounded-xl hover:bg-ink-700">Cerrar sesión</a>
         <?php else: ?>
           <a href="<?= path('/login') ?>"   class="block px-3 py-2.5 text-sm text-ink-200 rounded-xl hover:bg-ink-700">Iniciar sesión</a>

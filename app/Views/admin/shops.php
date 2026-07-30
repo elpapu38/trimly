@@ -92,6 +92,26 @@
     <textarea id="s-r" rows="3" placeholder="Motivo..." class="w-full bg-ink-700 border border-ink-600 rounded-xl px-3 py-2 text-sm text-cream-light focus:border-gold focus:outline-none resize-none mb-3"></textarea>
     <label class="text-xs text-ink-400 mb-1 block">Días (0 = indefinido)</label>
     <input type="number" id="s-d" min="0" max="365" value="7" class="w-full bg-ink-700 border border-ink-600 rounded-xl px-3 py-2 text-sm text-cream-light focus:border-gold focus:outline-none mb-4">
+
+    <!-- Visibilidad pública: binario y claro -->
+    <label class="text-xs text-ink-400 mb-1.5 block">¿El local debe aparecer suspendido para los clientes?</label>
+    <div class="grid grid-cols-2 gap-2 mb-4">
+      <button type="button" onclick="setSuspVis(true,this)"
+              class="susp-vis-btn py-2.5 rounded-xl text-sm font-semibold border-2 border-gold bg-gold/15 text-gold transition-all"
+              data-val="1">
+        Sí, mostrar suspendido
+      </button>
+      <button type="button" onclick="setSuspVis(false,this)"
+              class="susp-vis-btn py-2.5 rounded-xl text-sm font-semibold border-2 border-ink-600 text-ink-300 hover:border-ink-500 transition-all"
+              data-val="0">
+        No, ocultarlo
+      </button>
+    </div>
+    <p class="text-[11px] text-ink-500 mb-4">
+      Si elegís "ocultarlo", el local sigue suspendido internamente pero los clientes lo ven normal,
+      sin reservas habilitadas y sin saber que está suspendido.
+    </p>
+
     <div class="flex gap-3">
       <button onclick="doSusp()" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-semibold py-2.5 rounded-xl text-sm">Suspender</button>
       <button onclick="document.getElementById('susp-modal').classList.replace('flex','hidden')" class="flex-1 bg-ink-700 text-ink-200 py-2.5 rounded-xl text-sm">Cancelar</button>
@@ -100,9 +120,29 @@
 </div>
 <script>
 let _sid=null;
-function openSusp(id){_sid=id;document.getElementById('susp-modal').classList.replace('hidden','flex');}
-async function doSusp(){document.getElementById('susp-modal').classList.replace('flex','hidden');await act(_sid,'suspend',document.getElementById('s-r').value,document.getElementById('s-d').value);}
-async function act(id,action,reason='',days=0){
-  const d=await trimlyAction(`<?= path('/admin/locales/') ?>${id}/moderar`,{action,reason,days},()=>setTimeout(()=>location.reload(),1000));
+let _suspVis=1; // por defecto: mostrar suspendido
+
+function setSuspVis(val, btn){
+  _suspVis = val ? 1 : 0;
+  document.querySelectorAll('.susp-vis-btn').forEach(b=>{
+    b.classList.remove('border-gold','bg-gold/15','text-gold','border-ink-600','text-ink-300');
+    b.classList.add('border-ink-600','text-ink-300');
+  });
+  btn.classList.remove('border-ink-600','text-ink-300');
+  btn.classList.add('border-gold','bg-gold/15','text-gold');
+}
+
+function openSusp(id){
+  _sid=id; _suspVis=1;
+  document.getElementById('susp-modal').classList.replace('hidden','flex');
+}
+
+async function doSusp(){
+  document.getElementById('susp-modal').classList.replace('flex','hidden');
+  await act(_sid,'suspend',document.getElementById('s-r').value,document.getElementById('s-d').value,_suspVis);
+}
+
+async function act(id,action,reason='',days=0,suspension_public=1){
+  const d=await trimlyAction(`<?= path('/admin/locales/') ?>${id}/moderar`,{action,reason,days,suspension_public},()=>setTimeout(()=>location.reload(),1000));
 }
 </script>

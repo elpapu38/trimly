@@ -68,7 +68,7 @@
           <?php if(!empty($shop['first_photo'])): ?>
           <img src="<?= upload_url($shop['first_photo']) ?>"
                alt="<?= e($shop['name'] ?? '') ?>"
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 <?= (($shop['status']??'active')==='suspended' && !empty($shop['suspension_public'])) ? 'grayscale brightness-50' : '' ?>"
                loading="lazy">
           <?php else: ?>
           <div class="w-full h-full flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-ink-800 to-ink-700">
@@ -77,10 +77,20 @@
           </div>
           <?php endif; ?>
           <!-- Badges featured / verified -->
-          <div class="absolute top-2 left-2 flex gap-1.5">
+          <div class="absolute top-2 left-2 flex gap-1.5 flex-wrap">
             <?php if(!empty($shop['featured'])): ?><span class="text-[10px] font-bold bg-gold text-ink-900 px-2 py-0.5 rounded-full">Destacado</span><?php endif; ?>
             <?php if(!empty($shop['verified'])): ?><span class="text-[10px] font-bold bg-blue-600/90 text-white px-2 py-0.5 rounded-full">✓ Verificado</span><?php endif; ?>
           </div>
+          <!-- Suspended overlay -->
+          <?php if(($shop['status']??'active')==='suspended' && !empty($shop['suspension_public'])): ?>
+          <div class="absolute inset-0 bg-ink-900/80 flex flex-col items-center justify-center text-center p-3 pointer-events-none">
+            <span class="text-2xl mb-1">🚫</span>
+            <span class="text-xs font-bold text-red-400">Suspendido</span>
+            <?php if(!empty($shop['suspension_reason'])): ?>
+            <span class="text-[10px] text-red-300/80 mt-0.5 line-clamp-2"><?= e($shop['suspension_reason']) ?></span>
+            <?php endif; ?>
+          </div>
+          <?php endif; ?>
           <!-- Rating badge encima de la imagen -->
           <?php if(!empty($shop['rating_count']) && $shop['rating_count'] > 0): ?>
           <div class="absolute bottom-2 right-2 flex items-center gap-1 bg-ink-900/80 backdrop-blur-sm rounded-full px-2 py-0.5">

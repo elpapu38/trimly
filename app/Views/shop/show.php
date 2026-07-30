@@ -1,6 +1,6 @@
 <?php
 $user    = $user ?? ($_SESSION['user'] ?? null);
-$canBook = !$user || ($user['role'] === 'client');
+$canBook = (($shop['status'] ?? 'active') === 'active') && (!$user || $user['role'] === 'client');
 $pageTitle       = e($shop['name']);
 $pageDescription = $shop['description']
     ? truncate($shop['description'], 160)
@@ -148,6 +148,29 @@ $typeIcon   = $typeIcons[$shop['type']] ?? '✂';
      CUERPO PRINCIPAL
 ══════════════════════════════════════════════════════════ -->
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+
+    <!-- ══ BANNER SUSPENSIÓN ══ -->
+    <?php if (($shop['status']??'active') === 'suspended' && !empty($shop['suspension_public'])): ?>
+    <div class="relative mb-6 rounded-2xl overflow-hidden border border-red-500/40">
+        <!-- Greyed-out blurred background -->
+        <?php if (!empty($photos)): ?>
+        <img src="<?= upload_url($photos[0]['filename']) ?>" alt=""
+             class="w-full h-32 object-cover filter grayscale brightness-30 blur-sm select-none pointer-events-none">
+        <?php else: ?>
+        <div class="w-full h-32 bg-ink-700 filter grayscale"></div>
+        <?php endif; ?>
+        <!-- Overlay text -->
+        <div class="absolute inset-0 bg-ink-900/80 flex flex-col items-center justify-center p-4 text-center">
+            <span class="text-3xl mb-2">🚫</span>
+            <p class="text-red-400 font-bold text-lg">Local suspendido</p>
+            <?php if (!empty($shop['suspension_reason'])): ?>
+            <p class="text-red-300/80 text-sm mt-1 max-w-md">Motivo: <?= e($shop['suspension_reason']) ?></p>
+            <?php endif; ?>
+            <p class="text-ink-500 text-xs mt-2">Este local no puede recibir reservas en este momento.</p>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
 
         <!-- ── Columna principal ── -->
@@ -353,22 +376,25 @@ $typeIcon   = $typeIcons[$shop['type']] ?? '✂';
                         <?php endif; ?>
                     </div>
 
-                    <!-- Portfolio del empleado — cuadrícula + lightbox (igual que panel de empleado) -->
+                    <!-- Portfolio del empleado — cuadrícula, abre en el lightbox global -->
                     <?php
                     $portfolio12 = array_slice($emp['portfolio'], 0, 12);
                     if (!empty($portfolio12)):
                     $empGridId = 'empgrid-' . $emp['id'];
-                    $empLbKey  = 'empLb_' . $emp['id'];
+                    $empPhotosJson = json_encode(array_values(array_map(
+                        fn($p) => ['url' => upload_url($p['filename']), 'cap' => $p['caption'] ?? ''],
+                        $portfolio12
+                    )));
                     ?>
                     <div class="px-4 pb-4 sm:px-5 sm:pb-5 border-t border-ink-700/50 pt-4">
-                        <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center justify-between mb-2 max-w-md mx-auto lg:max-w-none">
                             <p class="text-xs text-ink-500 uppercase tracking-widest font-semibold">Trabajos</p>
                             <span class="text-sm font-bold text-white"><?= count($portfolio12) ?> foto<?= count($portfolio12)!==1?'s':'' ?></span>
                         </div>
-                        <div class="grid grid-cols-3 gap-1.5" id="<?= $empGridId ?>">
+                        <div class="grid grid-cols-3 gap-1.5 max-w-md mx-auto lg:max-w-none" id="<?= $empGridId ?>">
                             <?php foreach ($portfolio12 as $pIdx => $photo): ?>
                             <div class="group relative rounded-lg overflow-hidden cursor-pointer" style="aspect-ratio:1"
-                                 onclick="openEmpLb('<?= $empLbKey ?>', <?= $pIdx ?>)">
+                                 onclick='globalLightboxOpen(<?= $empPhotosJson ?>, <?= $pIdx ?>)'>
                                 <img src="<?= upload_url($photo['filename']) ?>"
                                      alt="<?= e($photo['caption'] ?? $emp['name']) ?>"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
@@ -382,67 +408,6 @@ $typeIcon   = $typeIcons[$shop['type']] ?? '✂';
                             <?php endforeach; ?>
                         </div>
                     </div>
-
-                    <!-- Lightbox para este empleado -->
-                    <div id="lb-<?= $empLbKey ?>" class="fixed inset-0 z-[60] bg-ink-900/95 hidden items-center justify-center p-4"
-                         onclick="if(event.target===this)closeEmpLb('<?= $empLbKey ?>')">
-                        <button onclick="empLbPrev('<?= $empLbKey ?>', <?= count($portfolio12) ?>)"
-                                class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full text-xl flex items-center justify-center z-10">‹</button>
-                        <div class="max-w-xl w-full text-center">
-                            <img id="lb-<?= $empLbKey ?>-img" src="" alt="" class="max-h-[78vh] object-contain rounded-xl mx-auto">
-                            <p id="lb-<?= $empLbKey ?>-cap" class="text-white text-sm mt-2 font-medium"></p>
-                            <p id="lb-<?= $empLbKey ?>-cnt" class="text-ink-500 text-xs mt-0.5"></p>
-                        </div>
-                        <button onclick="empLbNext('<?= $empLbKey ?>', <?= count($portfolio12) ?>)"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full text-xl flex items-center justify-center z-10">›</button>
-                        <button onclick="closeEmpLb('<?= $empLbKey ?>')"
-                                class="absolute top-3 right-3 w-9 h-9 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full flex items-center justify-center text-lg z-10">×</button>
-                    </div>
-                    <script>
-                    (function(){
-                      const key = <?= json_encode($empLbKey) ?>;
-                      const photos = <?= json_encode(array_values(array_map(fn($p)=>['url'=>upload_url($p['filename']),'cap'=>$p['caption']??''],$portfolio12))) ?>;
-                      let idx = 0;
-                      window._empLbIdx = window._empLbIdx || {};
-                      function render(){
-                        window._empLbIdx[key]=idx;
-                        document.getElementById('lb-'+key+'-img').src = photos[idx].url;
-                        document.getElementById('lb-'+key+'-cap').textContent = photos[idx].cap;
-                        document.getElementById('lb-'+key+'-cnt').textContent = (idx+1)+' / '+photos.length;
-                      }
-                      window.openEmpLb = window.openEmpLb || function(k,i){
-                        idx=i; window._empLbIdx[k]=i;
-                        document.getElementById('lb-'+k+'-img').src=photos[i].url;
-                        document.getElementById('lb-'+k+'-cap').textContent=photos[i].cap;
-                        document.getElementById('lb-'+k+'-cnt').textContent=(i+1)+' / '+photos.length;
-                        const m=document.getElementById('lb-'+k); m.classList.remove('hidden'); m.classList.add('flex');
-                        document.body.style.overflow='hidden';
-                      };
-                      window.closeEmpLb = window.closeEmpLb || function(k){
-                        document.getElementById('lb-'+k).classList.replace('flex','hidden');
-                        document.body.style.overflow='';
-                      };
-                      window.empLbNext = window.empLbNext || function(k,t){
-                        const i=(window._empLbIdx[k]??0); idx=(i+1)%t; window.openEmpLb(k,idx);
-                      };
-                      window.empLbPrev = window.empLbPrev || function(k,t){
-                        const i=(window._empLbIdx[k]??0); idx=(i-1+t)%t; window.openEmpLb(k,idx);
-                      };
-                      // Override openEmpLb for this specific key
-                      const origOpen = window.openEmpLb;
-                      window['_empOpen_'+key] = function(i){
-                        idx=i; window._empLbIdx[key]=i;
-                        document.getElementById('lb-'+key+'-img').src=photos[i].url;
-                        document.getElementById('lb-'+key+'-cap').textContent=photos[i].cap;
-                        document.getElementById('lb-'+key+'-cnt').textContent=(i+1)+' / '+photos.length;
-                        const m=document.getElementById('lb-'+key); m.classList.remove('hidden'); m.classList.add('flex');
-                        document.body.style.overflow='hidden';
-                      };
-                    })();
-                    function openEmpLb(k,i){
-                      if(window['_empOpen_'+k]){window['_empOpen_'+k](i);return;}
-                    }
-                    </script>
                     <?php endif; ?>
 
                 </div>
@@ -451,36 +416,86 @@ $typeIcon   = $typeIcons[$shop['type']] ?? '✂';
             </section>
             <?php endif; ?>
 
-            <!-- Lightbox fotos de empleado -->
-            <div id="empPhotoModal" class="fixed inset-0 z-50 bg-ink-900/90 backdrop-blur-sm hidden items-center justify-center p-4"
-                 onclick="if(event.target===this)closeEmpPhoto()">
-                <div class="max-w-2xl w-full">
-                    <img id="empPhotoImg" src="" alt="" class="w-full max-h-[80vh] object-contain rounded-2xl">
-                    <p id="empPhotoCaption" class="text-center text-ink-400 text-sm mt-3"></p>
-                    <button onclick="closeEmpPhoto()"
-                            class="absolute top-4 right-4 w-9 h-9 bg-ink-700/80 hover:bg-ink-600 text-cream-light rounded-full text-lg flex items-center justify-center transition-colors">
-                        ×
-                    </button>
+            <!-- Lightbox global del portfolio — un único modal compartido por todos los empleados -->
+            <div id="globalLb" class="fixed inset-0 z-[70] bg-ink-900/95 hidden items-center justify-center p-4 sm:p-8"
+                 onclick="if(event.target===this) globalLightboxClose()">
+                <button onclick="globalLightboxPrev()"
+                        class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full text-xl flex items-center justify-center z-10 transition-colors">‹</button>
+
+                <div class="max-w-3xl w-full text-center">
+                    <img id="globalLbImg" src="" alt=""
+                         class="max-h-[80vh] w-auto max-w-full object-contain rounded-xl mx-auto">
+                    <p id="globalLbCap" class="text-white text-sm mt-3 font-medium"></p>
+                    <p id="globalLbCnt" class="text-ink-400 text-xs mt-1"></p>
                 </div>
+
+                <button onclick="globalLightboxNext()"
+                        class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full text-xl flex items-center justify-center z-10 transition-colors">›</button>
+                <button onclick="globalLightboxClose()"
+                        class="absolute top-4 right-4 w-9 h-9 bg-ink-700/80 hover:bg-ink-600 text-white rounded-full flex items-center justify-center text-lg z-10 transition-colors">×</button>
             </div>
             <script>
-            function openEmpPhoto(url, caption) {
-                document.getElementById('empPhotoImg').src = url;
-                document.getElementById('empPhotoCaption').textContent = caption;
-                const m = document.getElementById('empPhotoModal');
+            // ── Lightbox global del portfolio ──────────────────────────
+            // Un solo set de funciones para TODOS los empleados de la página.
+            // Cada grilla pasa su propio array de fotos al abrir.
+            window._glbPhotos = [];
+            window._glbIdx    = 0;
+
+            function globalLightboxRender() {
+                const p = window._glbPhotos[window._glbIdx];
+                if (!p) return;
+                document.getElementById('globalLbImg').src         = p.url;
+                document.getElementById('globalLbCap').textContent = p.cap || '';
+                document.getElementById('globalLbCnt').textContent = (window._glbIdx + 1) + ' / ' + window._glbPhotos.length;
+            }
+
+            function globalLightboxOpen(photos, idx) {
+                window._glbPhotos = photos;
+                window._glbIdx    = idx;
+                globalLightboxRender();
+                const m = document.getElementById('globalLb');
                 m.classList.remove('hidden');
                 m.classList.add('flex');
                 document.body.style.overflow = 'hidden';
             }
-            function closeEmpPhoto() {
-                const m = document.getElementById('empPhotoModal');
+
+            function globalLightboxClose() {
+                const m = document.getElementById('globalLb');
                 m.classList.add('hidden');
                 m.classList.remove('flex');
                 document.body.style.overflow = '';
             }
-            document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEmpPhoto(); });
 
-            // Portfolio uses per-employee grid+lightbox (see inline scripts above)
+            function globalLightboxNext() {
+                if (!window._glbPhotos.length) return;
+                window._glbIdx = (window._glbIdx + 1) % window._glbPhotos.length;
+                globalLightboxRender();
+            }
+
+            function globalLightboxPrev() {
+                if (!window._glbPhotos.length) return;
+                window._glbIdx = (window._glbIdx - 1 + window._glbPhotos.length) % window._glbPhotos.length;
+                globalLightboxRender();
+            }
+
+            document.addEventListener('keydown', e => {
+                const m = document.getElementById('globalLb');
+                if (!m || !m.classList.contains('flex')) return;
+                if (e.key === 'Escape')     globalLightboxClose();
+                if (e.key === 'ArrowRight') globalLightboxNext();
+                if (e.key === 'ArrowLeft')  globalLightboxPrev();
+            });
+
+            // Swipe táctil — funciona igual en mobile y PC (touch vs click ya cubierto arriba)
+            (function() {
+                let startX = 0;
+                const lb = document.getElementById('globalLb');
+                lb.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+                lb.addEventListener('touchend', e => {
+                    const dx = e.changedTouches[0].clientX - startX;
+                    if (Math.abs(dx) > 40) dx < 0 ? globalLightboxNext() : globalLightboxPrev();
+                }, { passive: true });
+            })();
             </script>
 
 
@@ -558,11 +573,16 @@ $typeIcon   = $typeIcons[$shop['type']] ?? '✂';
                     <div class="p-4 sm:p-5 bg-ink-800 border border-ink-700 rounded-xl" id="review-<?= $review['id'] ?>">
                         <div class="flex items-start justify-between gap-3 mb-3">
                             <div class="flex items-center gap-3">
+                                <?php if (!empty($review['client_avatar'])): ?>
+                                <img src="<?= upload_url($review['client_avatar']) ?>" alt="<?= e($review['client_name']) ?>"
+                                     class="w-9 h-9 rounded-full object-cover border border-ink-600 shrink-0">
+                                <?php else: ?>
                                 <div class="w-9 h-9 rounded-full bg-ink-700 border border-ink-600 flex items-center justify-center shrink-0">
                                     <span class="text-sm font-bold text-ink-300">
                                         <?= strtoupper(substr($review['client_name'],0,1)) ?>
                                     </span>
                                 </div>
+                                <?php endif; ?>
                                 <div>
                                     <p class="text-sm font-semibold text-cream-light">
                                         <?= e(explode(' ',$review['client_name'])[0]) ?>

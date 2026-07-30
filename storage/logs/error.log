@@ -942,3 +942,253 @@
 [16-Jun-2026 13:15:22 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
 [16-Jun-2026 13:15:22 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
 [16-Jun-2026 13:34:45 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[01000]: Warning: 1265 Data truncated for column 'payment_option' at row 1 in C:\laragon\www\trimly\app\Models\BaseModel.php:68
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:42:19 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:43:20 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:44:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:45:50 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:47:17 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 01:49:12 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[18-Jun-2026 12:48:23 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[18-Jun-2026 12:51:03 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php:67
+[18-Jun-2026 12:51:03 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php on line 67
+[18-Jun-2026 12:51:24 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php:67
+[18-Jun-2026 12:51:24 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php on line 67
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:29 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:22:55 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 15:23:21 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 15:34:28 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php:67
+[19-Jun-2026 15:34:28 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php on line 67
+[19-Jun-2026 15:34:32 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php:67
+[19-Jun-2026 15:34:32 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php on line 67
+[19-Jun-2026 15:34:41 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php:67
+[19-Jun-2026 15:34:41 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "total_pages" in C:\laragon\www\trimly\app\Views\shop_dash\reviews.php on line 67
+[19-Jun-2026 15:36:16 America/Argentina/Buenos_Aires] [ERROR 2] Undefined property: App\Controllers\BookingController::$userModel in C:\laragon\www\trimly\app\Controllers\BookingController.php:170
+[19-Jun-2026 15:36:16 America/Argentina/Buenos_Aires] PHP Warning:  Undefined property: App\Controllers\BookingController::$userModel in C:\laragon\www\trimly\app\Controllers\BookingController.php on line 170
+[19-Jun-2026 15:36:16 America/Argentina/Buenos_Aires] [EXCEPTION] Call to a member function find() on null in C:\laragon\www\trimly\app\Controllers\BookingController.php:170
+[19-Jun-2026 15:36:27 America/Argentina/Buenos_Aires] [ERROR 2] Undefined property: App\Controllers\BookingController::$userModel in C:\laragon\www\trimly\app\Controllers\BookingController.php:170
+[19-Jun-2026 15:36:27 America/Argentina/Buenos_Aires] PHP Warning:  Undefined property: App\Controllers\BookingController::$userModel in C:\laragon\www\trimly\app\Controllers\BookingController.php on line 170
+[19-Jun-2026 15:36:27 America/Argentina/Buenos_Aires] [EXCEPTION] Call to a member function find() on null in C:\laragon\www\trimly\app\Controllers\BookingController.php:170
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Undefined array key "id" in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 78
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] [ERROR 2] Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php:79
+[19-Jun-2026 16:09:14 America/Argentina/Buenos_Aires] PHP Warning:  Trying to access array offset on int in C:\laragon\www\trimly\app\Views\admin\index.php on line 79
+[22-Jun-2026 18:00:26 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:00:29 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:00:34 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:15:56 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:15:57 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:15:58 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:16:02 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:16:05 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:18:20 America/Argentina/Buenos_Aires] [EXCEPTION] SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '=' in C:\laragon\www\trimly\app\Models\BaseModel.php:102
+[22-Jun-2026 18:23:36 America/Argentina/Buenos_Aires] [EXCEPTION] syntax error, unexpected token "endif" in C:\laragon\www\trimly\app\Views\shop\show.php:412
+[22-Jun-2026 18:23:40 America/Argentina/Buenos_Aires] [EXCEPTION] syntax error, unexpected token "endif" in C:\laragon\www\trimly\app\Views\shop\show.php:412
+[22-Jun-2026 18:23:48 America/Argentina/Buenos_Aires] [EXCEPTION] syntax error, unexpected token "endif" in C:\laragon\www\trimly\app\Views\shop\show.php:412
+[22-Jun-2026 18:25:50 America/Argentina/Buenos_Aires] [EXCEPTION] syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" in C:\laragon\www\trimly\app\Views\shop\show.php:1403
+[22-Jun-2026 18:25:51 America/Argentina/Buenos_Aires] [EXCEPTION] syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" in C:\laragon\www\trimly\app\Views\shop\show.php:1403

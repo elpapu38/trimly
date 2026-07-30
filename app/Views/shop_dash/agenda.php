@@ -252,6 +252,7 @@ function openModal(ev) {
     <p><span class="text-ink-500">Horario:</span> <span class="text-cream-light">${ev.start?.split('T')[1]?.substring(0,5)||''} – ${ev.end?.split('T')[1]?.substring(0,5)||''}</span></p>
     ${p.phone?`<p><span class="text-ink-500">Teléfono:</span> <a href="tel:${escH(p.phone)}" class="text-gold">${escH(p.phone)}</a></p>`:''}
     ${p.price?`<p><span class="text-ink-500">Precio:</span> <span class="text-gold font-semibold">$${Number(p.price).toLocaleString('es-AR')}</span></p>`:''}
+    ${p.notes?`<div class="mt-2 p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-xl"><p class="text-xs text-amber-400 font-semibold mb-0.5">📝 Nota interna</p><p class="text-xs text-amber-200">${escH(p.notes)}</p></div>`:''}
   `;
   const acts = document.getElementById('modal-actions');
   acts.innerHTML = '';

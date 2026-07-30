@@ -66,6 +66,7 @@
         <h2 class="font-semibold text-cream-light text-sm">Pendientes de aprobación</h2>
         <a href="<?= path('/admin/locales?status=pending') ?>" class="text-xs text-gold hover:underline">Ver todos →</a>
       </div>
+      <?php $pendingShops = is_array($pendingShops) && isset($pendingShops["data"]) ? $pendingShops["data"] : (array)$pendingShops; ?>
       <?php if(empty($pendingShops)): ?>
         <div class="text-center py-6"><span class="text-2xl">✅</span><p class="text-sm text-ink-500 mt-2">Todo al día.</p></div>
       <?php else: foreach($pendingShops as $sh): ?>

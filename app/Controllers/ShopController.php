@@ -18,7 +18,9 @@ class ShopController extends BaseController
 
     public function show(string $slug): void {
         $shop = $this->shopModel->findBySlug($slug);
-        if (!$shop || $shop['status'] !== 'active' || $shop['is_shadowbanned']) {
+        // 404 for closed, shadowbanned, or suspended-but-hidden shops
+        $isSuspendedHidden = ($shop['status'] === 'suspended' && empty($shop['suspension_public']));
+        if (!$shop || in_array($shop['status'], ['closed']) || $shop['is_shadowbanned'] || $isSuspendedHidden) {
             http_response_code(404); $this->view('errors/404'); return;
         }
 
@@ -41,7 +43,7 @@ class ShopController extends BaseController
         // Load portfolio photos for each employee
         $db = \App\Models\Database::getInstance();
         foreach ($employees as &$emp) {
-            $pstmt = $db->prepare("SELECT * FROM employee_photos WHERE employee_id = ? ORDER BY created_at DESC LIMIT 6");
+            $pstmt = $db->prepare("SELECT * FROM employee_photos WHERE employee_id = ? ORDER BY created_at DESC LIMIT 12");
             $pstmt->execute([$emp['id']]);
             $emp['portfolio'] = $pstmt->fetchAll();
         }

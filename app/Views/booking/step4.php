@@ -1,7 +1,7 @@
 <?php /* app/Views/booking/step4.php */
 $currentStep = 4;
 $errors  = $_SESSION['form_errors'] ?? [];
-$old     = $_SESSION['form_old'] ?? [];
+$old = $_SESSION['form_old'] ?? [];
 unset($_SESSION['form_errors'], $_SESSION['form_old']);
 $diasES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
@@ -52,7 +52,7 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
     <input type="hidden" name="_csrf" value="<?= csrf() ?>">
 
     <!-- Non-client block -->
-    <?php if ($user && !in_array($user['role'], ['client'])): ?>
+    <?php if ($currentUser && !in_array($currentUser['role'], ['client'])): ?>
     <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6">
       <p class="text-red-400 font-semibold text-sm mb-1">⚠ No podés reservar con esta cuenta</p>
       <p class="text-xs text-red-300/80">Las cuentas de negocio, empleado o admin no pueden hacer reservas.</p>
@@ -62,7 +62,7 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
 
     <div class="flex items-center justify-between mb-3">
       <h2 class="font-semibold text-cream-light">Tus datos</h2>
-      <?php if ($user): ?>
+      <?php if ($currentUser): ?>
       <span class="text-xs text-emerald-400 flex items-center gap-1">
         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
         Datos de tu cuenta
@@ -79,7 +79,7 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
       <div>
         <label class="block text-sm text-ink-300 mb-1">Nombre completo *</label>
         <input type="text" name="client_name" required
-               value="<?= e($old['client_name'] ?? $user['name'] ?? '') ?>"
+               value="<?= e($old['client_name'] ?? $currentUser['name'] ?? '') ?>"
                class="input-gold w-full bg-ink-800 border <?= isset($errors['client_name']) ? 'border-red-500' : 'border-ink-600' ?> rounded-xl px-4 py-3 text-cream-light">
         <?php if (!empty($errors['client_name'])): ?>
           <p class="text-red-400 text-xs mt-1"><?= e($errors['client_name'][0]) ?></p>
@@ -88,7 +88,7 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
       <div>
         <label class="block text-sm text-ink-300 mb-1">Email *</label>
         <input type="email" name="client_email" required
-               value="<?= e($old['client_email'] ?? $user['email'] ?? '') ?>"
+               value="<?= e($old['client_email'] ?? $currentUser['email'] ?? '') ?>"
                class="input-gold w-full bg-ink-800 border <?= isset($errors['client_email']) ? 'border-red-500' : 'border-ink-600' ?> rounded-xl px-4 py-3 text-cream-light">
         <?php if (!empty($errors['client_email'])): ?>
           <p class="text-red-400 text-xs mt-1"><?= e($errors['client_email'][0]) ?></p>
@@ -97,7 +97,7 @@ $dayName = $diasES[(int)date('w', strtotime($booking['date']))] ?? '';
       <div>
         <label class="block text-sm text-ink-300 mb-1">Teléfono</label>
         <input type="tel" name="client_phone"
-               value="<?= e($old['client_phone'] ?? $user['phone'] ?? '') ?>"
+               value="<?= e($old['client_phone'] ?? $currentUser['phone'] ?? '') ?>"
                class="input-gold w-full bg-ink-800 border border-ink-600 rounded-xl px-4 py-3 text-cream-light">
       </div>
       <div>

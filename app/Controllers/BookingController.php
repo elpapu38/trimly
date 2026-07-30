@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\Service;
 use App\Models\Employee;
 use App\Models\Appointment;
+use App\Models\User;
 
 class BookingController extends BaseController
 {
@@ -15,6 +16,7 @@ class BookingController extends BaseController
     private Service     $serviceModel;
     private Employee    $employeeModel;
     private Appointment $appointmentModel;
+    private User        $userModel;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class BookingController extends BaseController
         $this->serviceModel     = new Service();
         $this->employeeModel    = new Employee();
         $this->appointmentModel = new Appointment();
+        $this->userModel        = new User();
     }
 
     // ── Paso 1: Elegir servicio ───────────────────────────────
@@ -162,17 +165,29 @@ class BookingController extends BaseController
         // Pre-fill user data if logged in
         $user = $this->auth();
 
-        $service     = $booking['service'] ?? [];
-        $depositPct  = (int)($service['deposit_pct'] ?? 0);
-        $depositAmt  = $depositPct > 0 ? round($service['price'] * $depositPct / 100, 2) : 0;
+        // $booking nunca guarda 'service' completo, solo 'service_id'.
+        // Lo buscamos en la DB y lo agregamos al array para que la vista lo use.
+        $service = $this->serviceModel->find($booking['service_id'] ?? 0);
+        if (!$service) {
+            $this->flash('error', 'El servicio seleccionado ya no está disponible.');
+            $this->redirect("/reservar/$slug");
+        }
+        $booking['service']  = $service;
+        $depositPct          = (int)($service['deposit_pct'] ?? 0);
+        $depositAmt           = $depositPct > 0 ? round($service['price'] * $depositPct / 100, 2) : 0;
+
+        // Fetch full user row from DB so we get phone number.
+        // IMPORTANT: we pass it as 'currentUser' (not 'user') because $user already
+        // exists in the router scope and EXTR_SKIP would prevent overwriting it.
+        $userFull = $user ? ($this->userModel->find($user['id']) ?: $user) : null;
 
         $this->view('booking/step4', [
-            'pageTitle'  => 'Confirmar turno — ' . $shop['name'],
-            'shop'       => $shop,
-            'booking'    => $booking,
-            'user'       => $user,
-            'depositPct' => $depositPct,
-            'depositAmt' => $depositAmt,
+            'pageTitle'   => 'Confirmar turno — ' . $shop['name'],
+            'shop'        => $shop,
+            'booking'     => $booking,
+            'currentUser' => $userFull,
+            'depositPct'  => $depositPct,
+            'depositAmt'  => $depositAmt,
         ]);
     }
 
@@ -259,7 +274,7 @@ class BookingController extends BaseController
             'shop_id'        => $shop['id'],
             'employee_id'    => $empId,
             'service_id'     => $service['id'],
-            'client_id'      => $clientId,
+            'client_id'      => $clientId ?: null,
             'client_name'    => sanitize($this->input('client_name')),
             'client_email'   => strtolower(trim($this->input('client_email'))),
             'client_phone'   => sanitize($this->input('client_phone', '')),

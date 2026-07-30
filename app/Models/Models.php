@@ -28,7 +28,8 @@ class Shop extends BaseModel {
     }
 
     public function search(string $query, string $city, string $type, int $page, int $perPage, array $extra=[]): array {
-        $where  = ['s.status="active"','s.is_shadowbanned=0'];
+        // Suspended shops only appear in search if suspension_public=1
+        $where  = ['(s.status = "active" OR (s.status = "suspended" AND s.suspension_public = 1))','s.is_shadowbanned=0'];
         $params = [];
         if ($query) { $where[]='(s.name LIKE ? OR s.description LIKE ? OR s.city LIKE ?)'; $params=array_merge($params,["%$query%","%$query%","%$query%"]); }
         if ($city)  { $where[]='s.city=?';              $params[]=$city; }
@@ -179,7 +180,7 @@ class Review extends BaseModel {
             'lowest'  => 'r.rating ASC,  r.created_at DESC',
             default   => 'r.created_at DESC',  // newest
         };
-        $data=$this->raw("SELECT r.*,a.client_name,a.client_email FROM reviews r JOIN appointments a ON a.id=r.appointment_id WHERE r.shop_id=? AND r.is_visible=1 ORDER BY {$orderBy} LIMIT {$perPage} OFFSET {$offset}",[$shopId]);
+        $data=$this->raw("SELECT r.*, COALESCE(a.client_name,'Cliente') AS client_name, a.client_email, u.avatar AS client_avatar FROM reviews r LEFT JOIN appointments a ON a.id=r.appointment_id LEFT JOIN users u ON u.email=a.client_email WHERE r.shop_id=? AND r.is_visible=1 ORDER BY {$orderBy} LIMIT {$perPage} OFFSET {$offset}",[$shopId]);
         return['data'=>$data,'total'=>$total,'per_page'=>$perPage,'current_page'=>$page,'last_page'=>max(1,(int)ceil($total/$perPage)),'sort'=>$sort];
     }
 

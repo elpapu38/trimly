@@ -30,7 +30,8 @@ class EmployeeDashController extends BaseController
     {
         $user     = $this->auth();
         $db       = \App\Models\Database::getInstance();
-        $stmt     = $db->prepare('SELECT e.*, sh.name AS shop_name, sh.slug AS shop_slug, sh.currency
+        $stmt     = $db->prepare('SELECT e.*, sh.name AS shop_name, sh.slug AS shop_slug, sh.currency,
+                                   sh.status AS shop_status, sh.suspension_reason
                                    FROM employees e JOIN shops sh ON sh.id = e.shop_id
                                    WHERE e.user_id = ? AND e.status = "active" LIMIT 1');
         $stmt->execute([$user['id']]);
@@ -42,10 +43,23 @@ class EmployeeDashController extends BaseController
         return $employee;
     }
 
+    // Verificar suspensión del local: redirige a pantalla de aviso si está suspendido
+    private function checkShopSuspension(array $emp): void
+    {
+        if (($emp['shop_status'] ?? 'active') === 'suspended') {
+            $this->view('employee_dash/suspended', [
+                'pageTitle' => 'Local suspendido',
+                'employee'  => $emp,
+            ]);
+            exit;
+        }
+    }
+
     // ── Dashboard ─────────────────────────────────────────────
     public function index(): void
     {
         $emp   = $this->getEmployee();
+        $this->checkShopSuspension($emp);
         $today = date('Y-m-d');
         $db    = \App\Models\Database::getInstance();
 
@@ -81,6 +95,7 @@ class EmployeeDashController extends BaseController
     public function appointments(): void
     {
         $emp    = $this->getEmployee();
+        $this->checkShopSuspension($emp);
         $date   = $this->input('date', date('Y-m-d'));
         $status = $this->input('status', '');
 
@@ -172,6 +187,9 @@ class EmployeeDashController extends BaseController
     public function updateStatus(int $id): void
     {
         $emp  = $this->getEmployee();
+        if (($emp['shop_status'] ?? 'active') === 'suspended') {
+            $this->jsonError('El local está suspendido. No podés realizar esta acción.', 403);
+        }
         $appt = $this->appointmentModel->find($id);
 
         if (!$appt || (int)$appt['employee_id'] !== (int)$emp['id']) {
@@ -192,6 +210,7 @@ class EmployeeDashController extends BaseController
     public function newAppointment(): void
     {
         $emp      = $this->getEmployee();
+        $this->checkShopSuspension($emp);
         $services = $this->employeeModel->raw(
             "SELECT s.* FROM services s
              JOIN employee_services es ON es.service_id = s.id
